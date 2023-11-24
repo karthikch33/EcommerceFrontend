@@ -1,0 +1,2 @@
+ const response = await axios.get(`
+    ${base_url}product/getallproducts?${data?.brand?`brand=${data?.brand}&&`:''}${data?.tag?`tags=${data?.tag}&&`:''}${data.category?`category=${data?.category}&&`:''}${data.minPrice?`price[gte]=${data?.minPrice}&&`:''}${data.maxPrice?`price[lte]=${data?.maxPrice}`:''}`)
