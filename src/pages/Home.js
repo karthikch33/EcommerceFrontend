@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
 import Marquee from 'react-fast-marquee'
 import BlogCard from '../components/BlogCard'
 import ProductCard from '../components/ProductCard'
 import SpecialProduct from '../components/SpecialProduct'
 import Meta from '../components/Meta'
 import services from '../utils/Data'
+import categories from '../static/CategoriesData'
+import { Col, Row } from 'react-bootstrap';
 import Container from '../components/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllBlogs } from '../features/blogs/blogSlice'
 import LoadingPage from '../components/Loading'
 import moment from 'moment'
 import { getProducts } from '../features/products/productSlice'
-import { getWishlist } from '../features/user/userSlice'
+import SwiperContainer from '../components/SwiperContainer'
 const Home = () => {
 
 
@@ -37,7 +38,7 @@ const Home = () => {
   const {productList} = useSelector(state=>state.product)
 
   useEffect(()=>{
-    dispatch(getProducts())
+    dispatch(getProducts({}))
   },[])
 
   useEffect(()=>{
@@ -58,143 +59,32 @@ const Home = () => {
   return (
     <>
      <Meta title="Home"/>
-     <Container class1="home-wrapper-1 py-5">
-     <div className="row">
-              <div className="col-5">
-                 <div className="main-banner position-relative p-3">
-                  <img src="images/main-banner.jpeg" className='img-fluid rounded-2 ' alt="main banner" />
-                  <div className="main-banner-content position-absolute">
-                    <h4>ULTIMATE BASE FOR YOUTH</h4>
-                    <h5>JBL Stereo</h5>
-                    <p>Starts From &#8377;2999 to &#8377;7999</p>
-                    <Link className='button'>Go There</Link>
-                  </div>
-                 </div>
-              </div>
-              <div className="col-7">
-                 <div className="d-flex flex-wrap  align-items-center">
-                 <div className="small-banner position-relative p-3">
-                  <img src="images/catbanner-01.jpg" className='img-fluid rounded-2 ' alt="main banner" />
-                  <div className="small-banner-content position-absolute">
-                    <h4>Gaming Special edition</h4>
-                    <h5>ROG Strix</h5>
-                    <p >Starts From &#8377;49999 to &#8377;1,77999</p>
-                  </div>
-                 </div>
-                 <div className="small-banner position-relative p-3">
-                  <img src="images/catbanner-02.webp" className='img-fluid rounded-2 ' alt="main banner" />
-                  <div className="small-banner-content position-absolute">
-                    <h4>Camera Special</h4>
-                    <h5 className='text-info'>POCO M4 PRO</h5>
-                    <p  style={{color:"#0dcaf0"}}>Starts From &#8377;49999 to &#8377;1,77999</p>
-                  </div>
-                 </div>
-                 <div className="small-banner position-relative p-3">
-                  <img src="images/catbanner-03.jpg" className='img-fluid rounded-2 ' alt="main banner" />
-                  <div className="small-banner-content position-absolute">
-                    <h4 >Entertainment Sale</h4>
-                    <h5 style={{color:"#9db84d"}}>Xiaomi Screens</h5>
-                    <p  style={{color:"#fae92d"}}>Starts From &#8377;8999 to &#8377;17999</p>
-                  </div>
-                 </div>
-                 <div className="small-banner position-relative p-3">
-                  <img src="images/catbanner-04.jpg" className='img-fluid rounded-2 ' alt="main banner" />
-                  <div className="small-banner-content position-absolute">
-                    <h4>Washing Machines</h4>
-                    <h5 className='text-white' style={{letterSpacing:"2px"}}>Haier 4s</h5>
-                    <p  style={{color:"#560000"}}>Starts From &#8377;8999 to &#8377;17999</p>
-                  </div>
-                 </div>
-                 </div>
-              </div>
-            </div>
-     </Container>
-     <Container class1="home-wrapper-2 py-5">
-     <div className="row">
-              <div className="col-12">
-                <div className="services d-flex align-items-center justify-content-between">
-                  {
-                      services?.map((i,j)=>{ 
-                          return(
-                            <div className='d-flex align-items-center gap-15' key={j}>
-                              <img src={i.image} alt='services'/>
-                              <div>
-                                <h6>{i.title}</h6>
-                                <p className='mb-0'>{i.tagline}</p>
-                                </div>
-                              </div>
-                          )
-                      })
-                  }
-                </div>
-              </div>
-            </div>
-     </Container>
+     <div class1="home-wrapper-1 py-5">
+     <div className="row " style={{width:"99.7vw"}}>
+          <SwiperContainer/>
+     </div>
+     </div>
 
-     <Container class1="home-wrapper-3 py-5">
-     <div className="row">
-              <div className="col-12">
-                <div className="categories d-flex flex-wrap justify-content-between align-items-center">
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Cameras</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/camera.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Smart Tv</h6>
-                        <p>15 Items</p>
-                      </div>
-                      <img src="images/tv.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Smart Watches</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/watch.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Music & Gaming</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/headphone.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Tabs</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/tab.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Speakers</h6>
-                        <p>15 Items</p>
-                      </div>
-                      <img src="images/speaker.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Laptops</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/laptop.jpg" alt="camera" />
-                    </div>
-                    <div className='d-flex gap-30 align-items-center justify-content-center'>
-                      <div>
-                        <h6>Washing Machines</h6>
-                        <p>10 Items</p>
-                      </div>
-                      <img src="images/washingmachine.webp" alt="camera" />
-                    </div>
+     <Container className="home-wrapper-3 py-5">
+      <Row className='py-5'>
+        <h1 className='fs-2 fw-bolder my-3'>Categories</h1>
+        {categories.map((category, index) => (
+          <Col key={index} xs={12} sm={6} md={4} lg={3}>
+            <div className="categories mb-4" >
+              <div className='d-flex align-items-center justify-content-center w-100'>
+                <div className="text-center">
+                  <h6>{category.title}</h6>
+                  <p>{category.count} </p>
                 </div>
+                <img src={category.image} alt={category.title} className="img-fluid" />
               </div>
             </div>
-     </Container>
+          </Col>
+        ))}
+      </Row>
+    </Container>
+
+     
      
      <Container class1="featured-wrapper py-5 home-wrapper-2">
      <div className="row">
@@ -256,15 +146,27 @@ const Home = () => {
             <div className="col-12">
               <h3 className='section-heading'>Special Products</h3>
             </div>
-            <div className="row ">
-              {
-                products === null ? <LoadingPage  height={"40vh"}/> : Array.isArray(products) && products?.map((element,i)=>{
-                   if(element?.tags?.includes('Special'))
-                   return   <SpecialProduct className="mb-2" title={element?.title} brand={element?.brand} price={element?.price} image={element?.images[0]?.url} rating={element?.totalrating.toString()} quantity={element?.quantity} sold={element?.sold}/>
-                   return ""
-                })
-              }              
-            </div>
+            <div className="row">
+                {products === null ? (
+                    <LoadingPage height={'40vh'} />
+                  ) : Array.isArray(products) && products?.map((element, i) => {
+                    if (element?.tags?.includes('Special')) {
+                      return (
+                          <SpecialProduct
+                          className="mb-2" 
+                            title={element?.title}
+                            brand={element?.brand}
+                            price={element?.price}
+                            image={element?.images[0]?.url}
+                            rating={element?.totalrating.toString()}
+                            quantity={element?.quantity}
+                            sold={element?.sold}
+                          />
+                      );
+                    }
+                    return ""; 
+                  })}
+                </div>
           </div>
       </Container>
 
@@ -299,6 +201,7 @@ const Home = () => {
             </div>
       </Container>
       
+      
       <Container class1="blog-wrapper py-5 home-wrapper-2">
       <div className="row">
               <div className="col-12">
@@ -311,6 +214,26 @@ const Home = () => {
                 }
             </div>
       </Container>
+
+
+      <Container className="home-wrapper-2" style={{marginBottom:"20px"}}>
+      <div className="row justify-content-center">
+
+          <h1 className='fs-2 fw-bolder my-3'>Information</h1>
+
+        {services.map((service, index) => (
+          <Col key={index} className="col-12 col-md-6 col-lg-4">
+            <div className="services d-flex align-items-center flex-column flex-md-row gap-15 py-5">
+              <img src={service.image} alt="services" className="img-fluid" />
+              <div>
+                <h6>{service.title}</h6>
+                <p className="mb-0">{service.tagline}</p>
+              </div>
+            </div>
+          </Col>
+        ))}
+      </div>
+    </Container>
      
     </>
   )

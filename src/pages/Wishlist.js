@@ -34,36 +34,38 @@ const Wishlist = () => {
     <>
          <Meta title={"WishList"}/>  
         <BreadCrumb title="Wishlist"/>
-        <Container class1="wishlist-wrapper home-wrapper-2 py-5">
-                <div className="row">
-                    {
-                       Array.isArray(wish) && wish?.map((element,i)=>{
-                            return <>
-                                <div className="col-3"  style={{marginBottom:"20px"}}>
-                                     <div className="wishlist-card position-relative" style={{backgroundColor:"white"}}>
+        <Container fluid className="wishlist-wrapper home-wrapper-2 py-5">
+    <div className="row">
+        {Array.isArray(wish) &&
+            wish?.map((element, i) => (
+                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={i} style={{ marginBottom: "20px" }}>
+                    <div className="wishlist-card position-relative" style={{ backgroundColor: "white" }}>
 
-                                   <img src="images/cross.svg" className="img-fluid cross position-absolute "alt="cross" onClick={()=>handleRemover(element?._id)}/>
+                        <img
+                            src="images/cross.svg"
+                            className="img-fluid cross position-absolute"
+                            alt="cross"
+                            onClick={() => handleRemover(element?._id)}
+                        />
 
-                                     <Link to={`/product/${element?._id}`} className="wishlist-card-image d-flex align-items-center justify-content-center flex-column">
+                        <Link to={`/product/${element?._id}`} className="wishlist-card-image d-flex align-items-center justify-content-center flex-column">
 
-                                        <div style={{width:"270px",height:"270px"}} className='d-flex justify-content-center align-items-center'>
-                                            <img src={element?.images[0]?.url} style={{maxWidth:"200px",maxHeight:"200px"}} className='img-fluid'  alt="" />
-                                        </div>
+                            <div style={{ width: "100%", height: "270px" }} className="d-flex justify-content-center align-items-center">
+                                <img src={element?.images[0]?.url} style={{ maxWidth: "100%", maxHeight: "100%" }} className="img-fluid" alt="" />
+                            </div>
 
-                                    <div className='bg-white ps-4 py-3'>
-                                        <h5 className='title'>{element?.title}</h5>
-                                        <h6 className='price'>&#8377; {element?.price}</h6>
-                                    </div>
+                            <div className="bg-white ps-4 py-3">
+                                <h5 className="title">{element?.title}</h5>
+                                <h6 className="price">&#8377; {element?.price}</h6>
+                            </div>
 
-                                    </Link>
-                                    </div>
-                                </div>
-                                </>
-                            
-                        })
-                    }
-            </div>
-        </Container>
+                        </Link>
+                    </div>
+                </div>
+            ))}
+    </div>
+</Container>
+
 
     </>
   )

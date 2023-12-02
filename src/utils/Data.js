@@ -25,6 +25,11 @@ const services =
         tagline:"100% Protected Payments",
         image:"../images/service-05.png",
     },
+    {
+        title:"No Card EMI's",
+        tagline:"EMI'S on Every Deals",
+        image:"../images/service-05.png",
+    },
     
 
 ]

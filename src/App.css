@@ -47,6 +47,8 @@ body{
   margin-bottom: 30px;
 }
 
+
+
 a{
   text-decoration: none;
   display: inline-block;
@@ -89,6 +91,14 @@ a{
 
 .header-upper{
   background-color: var(--color-131921);
+}
+
+
+
+@media only screen and (max-width:850px){
+  .none-class{
+    display: none;
+  }
 }
 
 .header-upper .input-group-text{
@@ -915,3 +925,25 @@ ion-icon{
 
 
 /* Loading Page Ends Here */
+
+/* Swiper Starts Here */
+
+.homepageswiper{
+  width: 100vw;
+  height: 700px;
+}
+@media only screen and (max-width:900px) {
+  .homepageswiper{
+    height: 350px;
+  }
+}
+
+.swiper-button-prev{
+  color: #131921 !important;
+}
+.swiper-button-next{
+  color: #131921 !important;
+}
+
+
+/* Swiper Ends Here */
