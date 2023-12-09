@@ -94,7 +94,7 @@ const SingleProduct = () => {
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper">
         <div className="row">
-          <div className="col-md-6 mb-4">
+          <div className="col-md-6 mb-4 order-md-1 order-2">
             <div className="main-product-image">
               <div className="d-flex justify-content-center align-items-center">
                 {/* <ReactImageZoom {...props} /> */}
@@ -120,7 +120,7 @@ const SingleProduct = () => {
                 ))}
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 order-md-2 order-1">
             <div className="main-product-details">
               <div className="border-bottom">
                 <h3 className="title">{currentProduct?.title}</h3>
