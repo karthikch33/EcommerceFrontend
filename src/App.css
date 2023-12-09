@@ -93,13 +93,24 @@ a{
   background-color: var(--color-131921);
 }
 
+.toogle-display{
+  display: block;
+}
+
+.toogle-none{
+  display: none !important;
+ }
 
 
-@media only screen and (max-width:850px){
-  .none-class{
-    display: none;
+@media only screen and  (max-width: 767px){
+   .toogle-none{
+    display: block !important;
+   }
+   .toogle-display{
+    display: none !important;
   }
 }
+
 
 .header-upper .input-group-text{
   background:var(--color-febd69);
@@ -658,7 +669,7 @@ ion-icon{
 }
 
 .contact-inner-wrapper>div{
-  width: 40%;
+  /* width: 40%; */
 
 }
 
@@ -742,9 +753,9 @@ ion-icon{
 /* Login Card */
 
 .login-card{
-  padding: 20px;
-  width: 500px;
-  margin: 30px auto;
+  /* padding: 20px; */
+  /* width: 500px; */
+  /* margin: 30px auto; */
   background-color: white;
   border: 1px solid rgba(137, 132, 132,0.3);
 }

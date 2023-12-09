@@ -65,7 +65,7 @@ const Header = () => {
         navigate('/store')
         setTimeout(()=>{
             dispatch(getProducts({category:filter}))
-        },1000)
+        },100)
     }
 
     useEffect(()=>{
@@ -87,6 +87,29 @@ const Header = () => {
     useEffect(()=>{
         dispatch(getCart(localStorage.getItem('user')?JSON.parse(localStorage.getItem('user'))?._id:""))
     },[])
+
+    const handleNavbar = ()=>{
+       const navbar =   document.querySelector('.gamechanger')
+       const navbar2 =   document.querySelector('.gamechanger2')
+       const navbar3 =   document.querySelector('.gamechanger3')
+        navbar.classList.toggle('toogle-none')   
+        navbar2.classList.toggle('toogle-display')   
+        navbar3.classList.toggle('toogle-display')   
+    }
+
+    const handleNavbar2 = ()=>{
+       const navbar =   document.querySelector('.gamechanger4')
+       const navbar2 =   document.querySelector('.gamechanger5')
+       const navbar3 =   document.querySelector('.gamechanger6')
+       const navbar4 =   document.querySelector('.gamechanger7')
+        navbar.classList.toggle('toogle-none')   
+        navbar2.classList.toggle('toogle-display')   
+        navbar3.classList.toggle('toogle-display')   
+        navbar4.classList.toggle('toogle-display')   
+    }
+
+
+
   return (
     <>
     <header className="header-top-strip py-2">
@@ -105,13 +128,17 @@ const Header = () => {
     <header className="header-upper py-3">
     <div className="container-xxl">
         <div className="row align-items-center">
-            <div className="col-md-2 col-12 order-md-1 order-2 mb-3 mb-md-0 d-flex justify-content-center">
+        <div className='toogle-none gamechanger4 toogle-none'>
+                        <label htmlFor=""  className='text-white fs-3 toogle-none w-100 text-center' style={{cursor:"pointer"}} onClick={handleNavbar2}>Click To Expand 
+                        </label>
+                    </div>
+            <div className="col-md-2 col-12 order-md-1 order-2 mb-3 mb-md-0 d-flex justify-content-center gamechanger5 toogle-display">
                 <h1>
                     <Link className='text-white'>AppC</Link>
                 </h1>
             </div>
             
-            <div className="col-md-4 col-12 order-md-2 order-1 mb-3 mb-md-0 d-flex justify-content-center ">
+            <div className="col-md-4 col-12 order-md-2 order-1 mb-3 mb-md-0 d-flex justify-content-center gamechanger6 toogle-display">
                 <div className="input-group ">
                     {productOpt && (
                         <Typeahead
@@ -132,7 +159,7 @@ const Header = () => {
                     </span>
                 </div>
             </div>
-            <div className='col-md-6 col-12 order-md-3 order-3 d-flex flex-column justify-content-center align-items-center'>
+            <div className='col-md-6 col-12 order-md-3 order-3 d-flex flex-column justify-content-center align-items-center gamechanger7 toogle-display'>
                 <div className='header-upper-links d-flex flex-column flex-md-row align-items-center justify-content-md-end'>
                     <Link className='d-flex align-items-center gap-10 mx-3 text-white mb-2 mb-md-0' to={"compare-product"}>
                         <img src='../images/compare.svg' alt='compare'/>
@@ -168,7 +195,11 @@ const Header = () => {
         <div className="row">
             <div className="col-12">
                 <div className="menu-bottom d-flex align-items-center justify-content-around flex-column flex-md-row gap-30">
-                    <div className="dropdown">
+                    <div className='toogle-none gamechanger'>
+                        <label htmlFor=""  className='text-white fs-3 toogle-none' style={{cursor:"pointer"}} onClick={handleNavbar}>Click To Expand 
+                        </label>
+                    </div>
+                    <div className="dropdown  gamechanger2 toogle-display">
                         <button className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             Show Categories
                         </button>
@@ -178,7 +209,7 @@ const Header = () => {
                             <li className="w-100"><button onClick={()=>getAllProducts("Washing Machines")} className="dropdown-item text-white w-100" to="#">Washing Machines</button></li>
                         </ul>
                     </div>
-                    <div className='menu-links'>
+                    <div className='menu-links  gamechanger3 toogle-display'>
                         <div className="d-flex flex-column flex-md-row align-items-center gap-15">
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/">Home</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store">Items</NavLink>
