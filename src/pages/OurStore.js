@@ -9,7 +9,7 @@ import Container from '../components/Container'
 import { getProducts } from '../features/products/productSlice'
 import { Col } from 'antd'
 const OurStore = () => {
-    const [grid,setGrid] = useState(4);
+    const [grid,setGrid] = useState(6);
     const {productList} = useSelector(state=>state?.product)
     const [brands,setBrands] = useState([])
     const [categories,setCategories] = useState([])
@@ -57,15 +57,19 @@ const OurStore = () => {
         setTags(newTags)
     },[productList])
     
-    // alert(grid)
-                          
+    const [filterVisible, setFilterVisible] = useState(true);
+
+  const toggleFilterVisibility = () => {
+    setFilterVisible(!filterVisible)
+  };
+    
   return (
     <>
         <Meta title={"OurStore"}/>  
         <BreadCrumb title="OurStore"/>
         <Container className="store-wrapper home-wrapper-2 py-5">
-    <div className="row">
-      <div className="col-lg-3 col-md-4">
+    <div className="row" style={{position:"relative"}}>
+      <div className={`col-lg-3 col-md-4 ${filterVisible ? 'd-block' : 'd-none'}`}>
         <div className='filter-card'>
           <h3 className='filter-title fs-3 my-3'>
             Filter By 
@@ -107,7 +111,7 @@ const OurStore = () => {
           </div>
         </div>
       </div>
-      <div className="col-lg-9 col-md-8">
+      <div className={`${filterVisible === false ? "col-lg-12":"col-lg-9"} col-md-8`}>
         <div className="filter-sort-grid">
           <div className="d-flex sort-reverse justify-content-between align-items-center">
             <div className="d-flex align-items-center gap-10">
@@ -126,18 +130,21 @@ const OurStore = () => {
               <div className="d-flex gap-10 align-items-center grid">
                 <img onClick={() => setGrid(12)} src="images/gr.svg" className='d-block img-fluid' alt="" />
                 <img onClick={() => setGrid(6)} src="images/gr2.svg" className='d-block img-fluid' alt="" />
-                <img onClick={() => setGrid(4)} src="images/gr3.svg" className='d-block img-fluid' alt="" />
-                <img onClick={() => setGrid(3)} src="images/gr4.svg" className='d-block img-fluid' alt="" />
               </div>
             </div>
           </div>
         </div>
         <div className="products-list pb-5">
-        <div className="d-flex flex-wrap gap-10 scroll" style={{ maxHeight: "190vh", overflowX: "scroll" }}>
+        <div className="d-flex flex-wrap justify-content-center align-items-center gap-10 scroll" style={{ maxHeight: "190vh", overflowX: "scroll" }}>
             <ProductCard grid={grid} datalist={productList} />
           </div>
         </div>
       </div>
+      <div style={{position:"absolute",top:"-50px",left:"150px"}}>
+      <button onClick={toggleFilterVisibility} className="btn btn-primary mt-3" >
+            {filterVisible ? 'Hide Filters' : 'Show Filters'}
+          </button>
+          </div>
     </div>
   </Container>
     </>

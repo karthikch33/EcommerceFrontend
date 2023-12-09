@@ -69,6 +69,7 @@ const ProductCard = React.memo((props) => {
               <div className={` ${location.pathname === '/store' ? `gr-${grid}` : "col-12 col-sm-6 col-md-4 col-lg-3"} `} key={i}>
             <div className='position-relative product-card'>
                 <div className="wishlist-icon position-absolute">
+
                 {
                     (Array.isArray(wish) && wish?.some(item => item?._id?.includes(element?._id))) ?
                     <button className='border-0 bg-transparent' onClick={() => handleWishlist(element?._id)}><AiTwotoneHeart className='fs-3' style={{ color: "red" }} /></button>
@@ -85,7 +86,7 @@ const ProductCard = React.memo((props) => {
                     <h6 className='brand'>{element?.brand}</h6>
                     <h5 className='product-title'>
                     <p>
-                        {element?.title}
+                        {grid === 12 ? element?.title : element?.title.substr(0,100)+"....."}
                     </p>
                     </h5>
                     <ReactStars
