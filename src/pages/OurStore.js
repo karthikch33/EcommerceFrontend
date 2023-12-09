@@ -90,8 +90,18 @@ const OurStore = () => {
     <>
         <Meta title={"OurStore"}/>  
         <BreadCrumb title="OurStore"/>
+        
         <Container className="store-wrapper home-wrapper-2 py-5" >
-    <div className="row" style={{position:"relative"}} >
+          <div className="row">
+            <div className="col-12">
+        <div className='d-flex justify-content-center align-items-center'>
+      <button onClick={toggleFilterVisibility} className="btn btn-warning mt-3" style={{outline:"none",border:"none"}} >
+            {filterVisible ? 'Hide Filters' : 'Show Filters'}
+          </button>
+          </div>
+            </div>
+          </div>
+    <div className="row">
       <div className={`col-lg-3 col-md-4 ${filterVisible ? 'd-block' : 'd-none'}`}>
         <div className='filter-card'>
           <h3 className='filter-title fs-3 my-3'>
@@ -163,11 +173,7 @@ const OurStore = () => {
           </div>
         </div>
       </div>
-      <div style={{position:"absolute",top:"-50px",left:"150px"}}>
-      <button onClick={toggleFilterVisibility} className="btn btn-primary mt-3" >
-            {filterVisible ? 'Hide Filters' : 'Show Filters'}
-          </button>
-          </div>
+      
     </div>
   </Container>
     </>
