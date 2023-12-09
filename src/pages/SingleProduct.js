@@ -106,12 +106,12 @@ const SingleProduct = () => {
                         : '../images/tab.jpg'
                       : '../images/tab.jpg'
                   }
-                  className="img-fluid"
+                  className="img-fluid h-100"
                   alt=""
                 />
               </div>
             </div>
-            <div className="other-product-images d-flex flex-wrap gap-3">
+            <div className="other-product-images d-flex flex-wrap gap-3 justify-content-center align-items-center">
               {currentProduct?.images &&
                 currentProduct?.images.map((image, index) => (
                   <div key={index}>
@@ -175,7 +175,7 @@ const SingleProduct = () => {
                   <h3 className="product-heading mb-0">Color:</h3>
                   <Color setColor={setColor} className="" colorlist={currentProduct?.color} />
                 </div>
-                <div className="d-flex gap-2 flex-row align-items-center">
+                <div className="d-flex gap-2 flex-row align-items-center mt-3">
                   <h3 className="product-heading">Quantity:</h3>
                   <div className="d-flex">
                     <input
@@ -188,7 +188,7 @@ const SingleProduct = () => {
                       value={quantity}
                     />
                   </div>
-                  <div className="d-flex justify-content-center align-items-center gap-2">
+                  <div className="d-flex flex-wrap gap-2 mt-3">
                     <button className="btn button" onClick={() => addProductToCart(currentProduct?._id)}>
                       Add To Cart
                     </button>

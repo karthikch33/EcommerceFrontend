@@ -814,10 +814,10 @@ ion-icon{
 } 
 
 .main-product-image img{
-  max-width: 450px !important;
-  max-height: 700px !important;
+  /* max-width: 450px !important; */
+  /* max-height: 700px !important; */
   /* margin-bottom: 10px; */
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .main-product-image >div{
