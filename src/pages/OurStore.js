@@ -56,6 +56,29 @@ const OurStore = () => {
         setCategories(newCategory)
         setTags(newTags)
     },[productList])
+
+    useEffect(() => {
+      const handleResize = () => {
+        // Check if the window width matches the condition for col-sm-12
+        if (window.matchMedia('(max-width: 767.98px)').matches) {
+          setGrid('12'); // Set grid class to gr-12 for small screens
+        } else {
+          setGrid('6'); // Set grid class to gr-4 for other screen sizes
+        }
+      };
+  
+      // Attach the event listener to the window resize event
+      window.addEventListener('resize', handleResize);
+  
+      // Call the function on component mount (initial render)
+      handleResize();
+  
+      // Clean up the event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []); 
+    
     
     const [filterVisible, setFilterVisible] = useState(true);
 
@@ -67,8 +90,8 @@ const OurStore = () => {
     <>
         <Meta title={"OurStore"}/>  
         <BreadCrumb title="OurStore"/>
-        <Container className="store-wrapper home-wrapper-2 py-5">
-    <div className="row" style={{position:"relative"}}>
+        <Container className="store-wrapper home-wrapper-2 py-5" >
+    <div className="row" style={{position:"relative"}} >
       <div className={`col-lg-3 col-md-4 ${filterVisible ? 'd-block' : 'd-none'}`}>
         <div className='filter-card'>
           <h3 className='filter-title fs-3 my-3'>
@@ -111,7 +134,7 @@ const OurStore = () => {
           </div>
         </div>
       </div>
-      <div className={`${filterVisible === false ? "col-lg-12":"col-lg-9"} col-md-8`}>
+      <div className={`${filterVisible === false ? "col-lg-12":"col-lg-9"} col-md-8 col-sm-12`} >
         <div className="filter-sort-grid">
           <div className="d-flex sort-reverse justify-content-between align-items-center">
             <div className="d-flex align-items-center gap-10">
