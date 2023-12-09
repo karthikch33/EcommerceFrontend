@@ -85,7 +85,7 @@ const SingleProduct = () => {
 
     const [orderProduct,setOrderProduct] = useState(true);
 
-    const props = {width: 900, height: 600, zoomWidth: 400, img:currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[0].url : "../images/tab.jpg":"../images/tab.jpg" }; 
+    // const props = {width: 900, height: 600, zoomWidth: 300, img:currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[0].url : "../images/tab.jpg":"../images/tab.jpg" ,scale:1}; 
 
     const copyToClipboard = (text) => {
         var textField = document.createElement('textarea')
@@ -109,22 +109,23 @@ const SingleProduct = () => {
             <div className="row">
                 <div className="col-6 mb-5">
                     <div className="main-product-image">
-                        <div>
-                        <ReactImageZoom {...props} />
+                        <div className='d-flex justify-content-center align-items-center'>
+                        {/* <ReactImageZoom {...props} /> */}
+                        <img src={currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[0].url : "../images/tab.jpg":"../images/tab.jpg"} className='img-fluid' alt=""  />
                         </div>
                     </div>
                     <div className="other-product-images d-flex flex-wrap gap-15">
                         <div>
-                            <img src="../images/tab.jpg" className='img-fluid' alt="" />
+                            <img src={currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[1].url : "../images/tab.jpg":"../images/tab.jpg"} className='img-fluid' style={{objectFit:"contain"}} alt="" />
                         </div>
                         <div>
-                            <img src="../images/tab.jpg" className='img-fluid' alt="" />
+                        <img src={currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[2].url : "../images/tab.jpg":"../images/tab.jpg"} className='img-fluid' style={{objectFit:"contain"}} alt="" />
                         </div>
                         <div>
-                            <img src="../images/tab.jpg" className='img-fluid' alt="" />
+                        <img src={currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[3].url : "../images/tab.jpg":"../images/tab.jpg"} className='img-fluid' style={{objectFit:"contain"}} alt="" />
                         </div>
                         <div>
-                            <img src="../images/tab.jpg" className='img-fluid' alt="" />
+                        <img src={currentProduct !== undefined ? Array.isArray(currentProduct?.images) ?currentProduct?.images[4].url : "../images/tab.jpg":"../images/tab.jpg"} className='img-fluid' style={{objectFit:"contain"}} alt="" />
                         </div>
                     </div>
                 </div>

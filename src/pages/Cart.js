@@ -77,7 +77,7 @@ const Cart = () => {
                         <div className="w-55">
                           <img
                             src={element?.productId?.images[0]?.url}
-                            style={{ width: '200px', height: '200px' }}
+                            style={{ width: '200px', height: '200px',objectFit:"contain" }}
                             alt="tab1"
                           />
                         </div>

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { getCart } from '../features/user/userSlice'
+import { getProducts } from '../features/products/productSlice';
 const Header = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(false);
@@ -22,6 +23,7 @@ const Header = () => {
     const {userCart} = useSelector(state=>state.user)
     const navigate = useNavigate()
     const [CartProducts,setCartProducts] = useState(userCart)
+    const [category,setCategory] = useState(null)
 
 
     const productState = useSelector(state=>state?.product?.productList)
@@ -56,6 +58,14 @@ const Header = () => {
     const handleLogOut = ()=>{
         localStorage.removeItem('user')
         window.location.reload()
+    }
+
+    const getAllProducts = (filter)=>{
+        setCategory(filter)
+        navigate('/store')
+        setTimeout(()=>{
+            dispatch(getProducts({category:filter}))
+        },1000)
     }
 
     useEffect(()=>{
@@ -163,15 +173,15 @@ const Header = () => {
                             Show Categories
                         </button>
                         <ul className="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
-                            <li className="w-100"><Link className="dropdown-item text-white w-100" to="#">Action</Link></li>
-                            <li className="w-100"><Link className="dropdown-item text-white w-100" to="#">Another action</Link></li>
-                            <li className="w-100"><Link className="dropdown-item text-white w-100" to="#">Something else here</Link></li>
+                            <li className="w-100"><button onClick={()=>getAllProducts('Mobile')} className="dropdown-item text-white w-100" to="#">Mobiles</button></li>
+                            <li className="w-100"><button onClick={()=>getAllProducts('Laptops')}  className="dropdown-item text-white w-100" to="#">Laptops</button></li>
+                            <li className="w-100"><button onClick={()=>getAllProducts("Washing Machines")} className="dropdown-item text-white w-100" to="#">Washing Machines</button></li>
                         </ul>
                     </div>
                     <div className='menu-links'>
                         <div className="d-flex flex-column flex-md-row align-items-center gap-15">
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/">Home</NavLink>
-                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store">Our Store</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store">Items</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/blogs">Blogs</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/contact">Contact</NavLink>
                             {

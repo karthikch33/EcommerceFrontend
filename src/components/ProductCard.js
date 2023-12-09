@@ -78,8 +78,8 @@ const ProductCard = React.memo((props) => {
                 </div>
                 <Link className="" to={`/product/${element?._id}`}>
                 <div className="product-image d-flex align-items-center justify-content-center w-100">
-                <img src={element?.images[0]?.url} className='' style={{maxWidth:"200px",maxHeight:"200px"}} alt="" />
-                <img src={element?.images[0]?.url} className='' style={{maxWidth:"200px",maxHeight:"200px"}} alt="" />
+                <img src={element?.images[0]?.url} className='' style={{maxWidth:"200px",maxHeight:"200px",objectFit:"contain"}} alt="" />
+                <img src={element?.images[1]?.url} className='' style={{maxWidth:"200px",maxHeight:"200px",objectFit:"contain"}} alt="" />
                 </div>
                 <div className="product-details">
                     <h6 className='brand'>{element?.brand}</h6>
