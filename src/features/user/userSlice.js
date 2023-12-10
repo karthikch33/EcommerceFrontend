@@ -18,6 +18,7 @@ let initialState = {
     orderPlaced:"",
     wishlist:"",
     userCart:"",
+    updatedProfile:"",
     message:""
 }
 
@@ -319,11 +320,8 @@ export const authSlice = createSlice({
             state.orderedProduct = action.payload
             if(state.isSuccess)
             {
-                toast.success("Ordered Placed")
+                toast.success("Ordered Placed Navigating To Home")
                 state.orderPlaced = "Success"
-                setTimeout(()=>{
-                    window.location.reload()
-                })
             }
             else
             {
@@ -350,6 +348,7 @@ export const authSlice = createSlice({
             state.isError = true
             state.isSuccess = false
             state.isLoading = false
+            state.updatedProfile = action.error
             state.message = action.error
         })
         buidler.addCase(updateUser.pending,(state)=>{
@@ -361,7 +360,16 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = true
             state.isLoading = false
-           
+            state.updatedProfile = action.payload
+            if(state.updatedProfile?.status === 201)
+            {
+                toast.success('Updated Successfully')
+            }
+            else{
+                if(state.updatedProfile?.status && state.updatedProfile?.error?.codeName === 'DuplicateKey')
+                if(state.updatedProfile?.error?.keyPattern?.mobile)
+                toast.error('Mobile Already Exists')
+            }
         })
         .addCase(updateUser.rejected,(state,action)=>{
             state.isError = true
@@ -379,12 +387,11 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.user = action.payload
-            console.log(localStorage.getItem('user'));
             if(state.isSuccess)
             {
                 localStorage.setItem('user',JSON.stringify(action.payload))
-                toast.success('Updated Successfully')
             }
+
         })
         .addCase(getUser.rejected,(state,action)=>{
             state.isError = true

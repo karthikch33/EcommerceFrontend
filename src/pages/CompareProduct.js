@@ -5,6 +5,7 @@ import Color from '../components/Color'
 import Container from '../components/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCompareItem, getCompareItems } from '../features/user/userSlice'
+import { Link } from 'react-router-dom'
 const CompareProduct = () => {
     const dispatch = useDispatch()
 
@@ -36,6 +37,7 @@ const CompareProduct = () => {
         {Array.isArray(itemslist) && itemslist.length > 0
             ? itemslist.map((element, i) => (
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12 mx-3 my-3"style={{boxShadow:"1px 1px 0px 3px rgba(0,0,0,0.2)"}} key={i}>
+                    <Link to={`/product/${element?._id}`}>
                     <div className="compare-product-card position-relative my-3">
                         <img
                             src="images/cross.svg"
@@ -72,11 +74,11 @@ const CompareProduct = () => {
                                     )}
                                 </p>
                             </div>
-                            <div className="product-detail">
+                            <div className="product-detail d-none">
                                 <h5>Color</h5>
                                 <Color colorlist={element?.color} />
                             </div>
-                            <div className="product-detail">
+                            <div className="product-detail d-none">
                                 <h5>Size</h5>
                                 <div className="d-flex gap-10">
                                     <p>S</p>
@@ -85,9 +87,14 @@ const CompareProduct = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
+                    </div>
             ))
-            : null}
+            : <div className='row'>
+                <div className="col-12">
+                    <label htmlFor=""className='text-dark fs-1 text-center w-100 mb-4' >NO ITEMS IN COMPARE LIST</label>
+                </div>
+                </div>}
     </div>
 </Container>
 

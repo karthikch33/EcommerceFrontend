@@ -36,7 +36,7 @@ const Wishlist = () => {
         <BreadCrumb title="Wishlist"/>
         <Container fluid className="wishlist-wrapper home-wrapper-2 py-5">
     <div className="row">
-        {Array.isArray(wish) &&
+        {wish?.length >0 ? Array.isArray(wish) &&
             wish?.map((element, i) => (
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={i} style={{ marginBottom: "20px" }}>
                     <div className="wishlist-card position-relative" style={{ backgroundColor: "white" }}>
@@ -62,8 +62,12 @@ const Wishlist = () => {
                         </Link>
                     </div>
                 </div>
-            ))}
-    </div>
+            )): <div className='row'>
+            <div className="col-12">
+                <label htmlFor=""className='text-dark fs-1 text-center w-100 mb-4' >NO ITEMS IN FAVORITE LIST</label>
+            </div>
+            </div>}
+    </div>:
 </Container>
 
 

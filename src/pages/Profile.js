@@ -14,7 +14,7 @@ import { toast } from 'react-toastify'
 const Profile = () => {
 
     const dispatch = useDispatch()
-    const {user} = useSelector(state=>state.user)
+    const {user,updatedProfile} = useSelector(state=>state.user)
 
     const [currentUser,setCurrentUser] = useState(user)
     const [oneTime,setOneTime] = useState(true)
@@ -24,7 +24,11 @@ const Profile = () => {
         setCurrentUser(user)
     },[user])
 
-    console.log(currentUser);
+    useEffect(()=>{
+        if(updatedProfile?.status === 201)
+         dispatch(getUser())
+    },[updatedProfile,dispatch])
+
 
     const emptyFunction = ()=>{
         if(oneTime)
@@ -48,11 +52,7 @@ const Profile = () => {
         onSubmit:(values)=>{
             if(updateNow)
             {
-                console.log(localStorage.getItem('user'));
                 dispatch(updateUser(values))
-                setTimeout(()=>{
-                   dispatch(getUser())
-                },2000)
             }
         }   
     })

@@ -73,6 +73,7 @@ const Cart = () => {
                 return (
                   <tr key={i} className="custom-table-row">
                     <td className="custom-table-cell">
+                    <Link to={`/product/${element?.productId?._id}`}>
                       <div className="d-flex align-items-center">
                         <div className="w-55">
                           <img
@@ -82,15 +83,20 @@ const Cart = () => {
                           />
                         </div>
                         <div className="w-45 ms-2">
-                          <h5 className="title" style={{ width: '250px' }}>
+                          <h5 className="title text-dark" style={{ width: '250px' }}>
                             {element?.productId?.title}
                           </h5>
-                          <h6 className="color">Color: 
+                          <h6 className="color d-none">Color: 
                           <Color colorlist={element?.color}/></h6>
                         </div>
                       </div>
+                        </Link>
                     </td>
-                    <td className="custom-table-cell fs-3">&#8377; {element?.productId?.price}</td>
+                    <td className="custom-table-cell fs-3">&#8377; {element?.productId?.price}
+                    </td>
+                    <div className='d-none'>
+                        {TotalCost +=element?.productId?.price * element?.orderedQuantity}
+                    </div>
                     <td className="custom-table-cell d-flex align-items-center justify-content-center gap-15">
                       <div className="d-flex flex-row h-100">
                         <label
@@ -105,16 +111,9 @@ const Cart = () => {
                         >
                           <CiCircleMinus className="fs-1 mx-2 cursor-pointer" />
                         </label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          value={element?.orderedQuantity}
-                          name=""
-                          id=""
-                          min={1}
-                          max={10}
-                          disabled
-                        />
+                        <span className="form-control" style={{background:"#f2f2f2"}}>
+                            {element?.orderedQuantity}
+                          </span>
                         <label
                           htmlFor=""
                           className="custom-icon"
@@ -137,6 +136,7 @@ const Cart = () => {
                       &#8377; {element?.orderedQuantity * element?.productId?.price}
                     </td>
                   </tr>
+                    
                 );
               } else if (element?.orderedQuantity === 0) {
                 removeFromCart(element?.productId?._id);
@@ -145,15 +145,17 @@ const Cart = () => {
         </tbody>
       </Table>
       <div className="col-12 py-2 mt-4">
-        <Link to={'/'} className="button">
+        <Link to={'/store'} className="button">
           Continue Shopping
         </Link>
         <div className="d-flex justify-content-end flex-column align-items-end mb-0">
           <h4>Sub Total: &#8377; {TotalCost}</h4>
           <p>Taxes and Shipping Calculated At CheckOut</p>
+          {userCart.length>0?
           <Link className="button" to={'/checkout'}>
             Checkout
-          </Link>
+          </Link> :""
+}
         </div>
       </div>
     </Container>

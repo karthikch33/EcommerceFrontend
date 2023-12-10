@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import Meta from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Container from '../components/Container'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import {useDispatch, useSelector} from 'react-redux'
 import axios from 'axios'
 import {config} from '../utils/axiosConfig'
-import { createAnOrder, emptyEntireCart } from '../features/user/userSlice'
+import { createAnOrder, emptyEntireCart, resetState } from '../features/user/userSlice'
 import { toast } from 'react-toastify'
+import base_url from '../utils/Url'
 
 const Checkout = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const cartState = useSelector(state=>state.user.userCart)
     const {orderPlaced} = useSelector(state=>state.user)
 
@@ -30,14 +32,21 @@ const Checkout = () => {
     })
 
     useEffect(()=>{
-        dispatch(emptyEntireCart())
+        if(orderPlaced==="Success")
+        orderRetained()
     },[orderPlaced])
+
+
+    const orderRetained = ()=>{
+        dispatch(emptyEntireCart())
+        setTimeout(()=>{
+            navigate('/home')
+        },4000)
+        dispatch(resetState())
+    }
+
     
-    const [shippingInfo,setShippingInfo] = useState(null)
-    const [paymentInfo,setPaymentInfo] = useState({
-        razorpayPaymentId: "gfnf",
-        razorpayOrderId: "fdgfd",
-    })
+    
     const [cartProductState,setCartProductState] = useState([])
 
     const formik = useFormik({
@@ -53,23 +62,9 @@ const Checkout = () => {
         },
         validationSchema:schema,
         onSubmit:(values)=>{
-            setShippingInfo(values)
-            if (shippingInfo !== null) {
-                checkOutHandler();
-            }
-            else{
-                toast.error("Something went wrong!")
-                // window.location.reload()
-            }
+            checkOutHandler(values);
         }
     })
-
-    useEffect(()=>{
-        setPaymentInfo(paymentInfo)
-        setShippingInfo(shippingInfo)
-    },[shippingInfo,paymentInfo])
-
-
     useEffect(()=>{
         let items = []
                 for (let index = 0; index < cartState.length; index++) {
@@ -99,14 +94,14 @@ const Checkout = () => {
         })
     }
 
-    const checkOutHandler = async ()=>{
+    const checkOutHandler = async (values)=>{
         const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
         if(!res)
         {
             alert('Razor Pay SDK Failed To Load')
             return;
         }
-        const result = await axios.post('http://localhost:1507/api/user/order/checkout',{amount:TotalCost+40},config)
+        const result = await axios.post(`${base_url}user/order/checkout`,{amount:TotalCost+40},config)
         if(!result)
         {   
             alert('Something Went Wrong')
@@ -115,7 +110,7 @@ const Checkout = () => {
         const {amount,id:order_id,currency} = result.data.order
         const options = {
             key: "rzp_test_ugc9pXTgWudCep", // Enter the Key ID generated from the Dashboard
-            amount: amount * 100,
+            amount: amount,
             currency: currency,
             name: "AppC",
             description: "Test Transaction",
@@ -128,35 +123,23 @@ const Checkout = () => {
                     razorpayOrderId: response.razorpay_order_id,
                 };
 
-                const result = await axios.post("http://localhost:1507/api/user/order/paymentverification", data,config);
+                const result = await axios.post(`${base_url}user/order/paymentverification`, data,config);
 
-                console.log(result);
 
                 if (response && response.razorpay_payment_id && response.razorpay_order_id) {
-                    console.log(response.razorpay_payment_id);
-                    console.log(response.razorpay_order_id);
-                    setPaymentInfo({
-                        razorpayPaymentId: response.razorpay_payment_id,
-                    razorpayOrderId: response.razorpay_order_id,
-                    })
-                    console.log(paymentInfo);
-                    setTimeout(()=>{
                         dispatch(createAnOrder({
                             totalPrice:TotalCost,
                             totalPriceAfterDiscount:TotalCost,
                             orderItems:cartProductState,
-                            paymentInfo:paymentInfo,
-                            shippingInfo:shippingInfo
+                            paymentInfo:{
+                                razorpayPaymentId: response.razorpay_payment_id,
+                            razorpayOrderId: response.razorpay_order_id,
+                            },
+                            shippingInfo:values
                         }))
-                    },2000)
                 } else {
                     console.error("Invalid response from Razorpay:", response);
                 }
-
-                
-
-               
-
             },
             prefill: {
                 name: "AppC",
@@ -184,7 +167,7 @@ const Checkout = () => {
         <BreadCrumb title="Checkout"/>
         <Container class1="check-out-wrapper home-wrapper-2 py-5">
         <div className="row">
-                    <div className="col-7">
+                    <div className="col-md-7">
                         <div className="checkout-left-data"></div>
                         <h3 className='website-name'>AppC</h3>
                         <nav aria-label="breadcrumb">
@@ -304,7 +287,7 @@ const Checkout = () => {
                             </div>
                         </form>
                     </div>
-                    <div className="col-5" >
+                    <div className="col-md-5" >
                         <div style={{maxHeight:"60vh",overflowY:"scroll"}} className='scroll'>
                         {
                             Array.isArray(cartState) && cartState?.map((item,i)=>{

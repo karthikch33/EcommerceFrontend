@@ -162,7 +162,7 @@ const SingleProduct = () => {
                     )}
                   </p>
                 </div>
-                <div className="d-flex gap-2 flex-column">
+                <div className="d-none gap-2 flex-column">
                   <h3 className="product-heading mt-3">Size:</h3>
                   <div className="d-flex flex-wrap gap-2">
                     <span className="badge border border-1 bg-white text-dark border-info">S</span>
@@ -171,7 +171,7 @@ const SingleProduct = () => {
                     <span className="badge border border-1 bg-white text-dark border-info">XXL</span>
                   </div>
                 </div>
-                <div className="d-flex gap-2 mt-3 mb-4 flex-row align-items-center">
+                <div className="d-none gap-2 mt-3 mb-4 flex-row align-items-center">
                   <h3 className="product-heading mb-0">Color:</h3>
                   <Color setColor={setColor} className="" colorlist={currentProduct?.color} />
                 </div>
@@ -224,7 +224,7 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex gap-2 align-items-center mt-3">
                   <h3 className="product-heading mb-0">Shipping & Returns </h3>
-                  <p className="product-data mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit Corporis</p>
+                  <p className="product-data mb-0"> "Shipping and returns: Where convenience meets confidence. Your satisfaction, delivered."</p>
                 </div>
                 <div className="d-flex gap-2 align-items-center my-4">
                   <h3 className="product-heading mb-0 fs-6"> Product Link:</h3>
