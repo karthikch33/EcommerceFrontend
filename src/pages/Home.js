@@ -14,6 +14,7 @@ import LoadingPage from '../components/Loading'
 import moment from 'moment'
 import { getProducts } from '../features/products/productSlice'
 import SwiperContainer from '../components/SwiperContainer'
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
 
 
@@ -40,6 +41,16 @@ const Home = () => {
   useEffect(()=>{
     dispatch(getProducts({}))
   },[])
+
+  const [category,setCategory] = useState(null)
+  const navigate = useNavigate()
+  const getAllProducts = (filter)=>{
+    setCategory(filter)
+    navigate('/store')
+    setTimeout(()=>{
+        dispatch(getProducts({category:filter}))
+    },100)
+}
 
   useEffect(()=>{
     setProducts(productList)
@@ -69,8 +80,8 @@ const Home = () => {
       <Row className='py-5'>
         <h1 className='fs-2 fw-bolder my-3'>Categories</h1>
         {categories.map((category, index) => (
-          <Col key={index} xs={12} sm={6} md={4} lg={3}>
-            <div className="categories mb-4" >
+          <Col key={index} xs={12} sm={6} md={4} lg={3} >
+            <div className="categories mb-4" onClick={()=>getAllProducts(category?.title)} style={{cursor:"pointer"}}>
               <div className='d-flex align-items-center justify-content-center w-100'>
                 <div className="text-center">
                   <h6>{category.title}</h6>
