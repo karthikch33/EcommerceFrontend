@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Meta from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Container from '../components/Container'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
@@ -11,6 +11,7 @@ import {config} from '../utils/axiosConfig'
 import { createAnOrder, emptyEntireCart, resetState } from '../features/user/userSlice'
 import { toast } from 'react-toastify'
 import base_url from '../utils/Url'
+import { getSingleProduct } from '../features/products/productSlice'
 
 const Checkout = () => {
 
@@ -18,6 +19,7 @@ const Checkout = () => {
     const navigate = useNavigate()
     const cartState = useSelector(state=>state.user.userCart)
     const {orderPlaced} = useSelector(state=>state.user)
+    const {singleProduct} = useSelector(state=>state.product)
 
     
     let schema = yup.object().shape({
@@ -35,6 +37,12 @@ const Checkout = () => {
         if(orderPlaced==="Success")
         orderRetained()
     },[orderPlaced])
+
+    const location = useLocation()
+    const getLocation = location?.pathname.split('/')[2]
+
+
+    
 
 
     const orderRetained = ()=>{
@@ -65,6 +73,14 @@ const Checkout = () => {
             checkOutHandler(values);
         }
     })
+
+   
+
+    useEffect(()=>{
+        dispatch(getSingleProduct(getLocation))
+    },[getLocation])
+    
+
     useEffect(()=>{
         let items = []
                 for (let index = 0; index < cartState.length; index++) {
@@ -77,6 +93,8 @@ const Checkout = () => {
                 }
                 setCartProductState(items)
     },[cartState])
+
+
 
 
 
@@ -130,7 +148,12 @@ const Checkout = () => {
                         dispatch(createAnOrder({
                             totalPrice:TotalCost,
                             totalPriceAfterDiscount:TotalCost,
-                            orderItems:cartProductState,
+                            orderItems:getLocation !== undefined ? {
+                                product:singleProduct?._id,
+                                quantity:1,
+                                color:singleProduct?.color[0]?._id,
+                                price:singleProduct?.price
+                            }:cartProductState,
                             paymentInfo:{
                                 razorpayPaymentId: response.razorpay_payment_id,
                             razorpayOrderId: response.razorpay_order_id,
@@ -287,10 +310,11 @@ const Checkout = () => {
                             </div>
                         </form>
                     </div>
+
                     <div className="col-md-5" >
                         <div style={{maxHeight:"60vh",overflowY:"scroll"}} className='scroll'>
                         {
-                            Array.isArray(cartState) && cartState?.map((item,i)=>{
+                     getLocation === undefined ?   Array.isArray(cartState) && cartState?.map((item,i)=>{
                                 return <div className='border-bottom py-4' >
                                 <div className="d-flex gap-10 align-items-center">
                                 <div className='w-75 d-flex gap-10 '>
@@ -311,7 +335,27 @@ const Checkout = () => {
                             {TotalCost += item?.orderedQuantity * item?.productId?.price}
                             </div>
                              </div>
-                            })
+                            }):singleProduct && singleProduct?._id &&
+                            <div className='border-bottom py-4' >
+                            <div className="d-flex gap-10 align-items-center">
+                            <div className='w-75 d-flex gap-10 '>
+                                 <div className='w-25 position-relative'>
+                                     <span style={{top:"-10px",right:"0px"}} className='badge bg-secondary text-white rounded-circle position-absolute'>{singleProduct?.orderedQuantity}</span>
+                                     <img src={singleProduct?.images[0]?.url} className='img-fluid' stle={{width:"100px",height:"100px"}} alt="tab" />
+                                 </div>
+                                 <div className=''>
+                                     <h5 className='title ms-4'>{singleProduct?.productId?.title}</h5>
+                                     <p className='ms-4' dangerouslySetInnerHTML={{__html:singleProduct?.description.substr(0,150)+"........"}}></p>
+                                 </div>
+                            </div>
+                                 <div className='flex-grow-1'>
+                                     <h5>&#8377; {singleProduct?.price}</h5>
+                                 </div>
+                                 </div>
+                                 <div className='d-none'>
+                            {TotalCost +=  singleProduct?.price}
+                            </div>
+                         </div>
                         }
                         </div>
                         <div className='d-flex justify-content-between align-item-center'>

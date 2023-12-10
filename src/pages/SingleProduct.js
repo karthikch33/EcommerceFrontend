@@ -4,7 +4,7 @@ import BreadCrumb from '../components/BreadCrumb';
 import ReactStars from 'react-rating-stars-component';
 import ProductCard from '../components/ProductCard';
 import ReactImageZoom from 'react-image-zoom';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Space } from 'antd';
 import Color from '../components/Color';
 import { BiGitCompare } from 'react-icons/bi';
@@ -23,6 +23,8 @@ const SingleProduct = () => {
 
   const { singleProduct } = useSelector((state) => state.product);
   const { wishlist, compareItemsList, userCart } = useSelector((state) => state.user);
+
+  const navigate = useNavigate()
 
   const [currentProduct, setCurrentProduct] = useState(null);
   const [wish, setWish] = useState(wishlist);
@@ -87,6 +89,10 @@ const SingleProduct = () => {
     }, 3000);
     textField.remove();
   };
+
+  const buyNowThisItem = (productId)=>{
+      navigate(`/checkout/${productId}`)
+  }
 
   return (
     <>
@@ -192,7 +198,7 @@ const SingleProduct = () => {
                     <button className="btn button" onClick={() => addProductToCart(currentProduct?._id)}>
                       Add To Cart
                     </button>
-                    <button className="button">Buy Now</button>
+                    <button className="button" onClick={()=>buyNowThisItem(currentProduct?._id)}>Buy Now</button>
                   </div>
                 </div>
                 <div className="d-flex gap-2 align-items-center mt-3">

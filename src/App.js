@@ -51,6 +51,7 @@ function App() {
           <Route path='product/:id' element={<SingleProduct/>}/>
           <Route path='cart' element={<PrivateRoutes><Cart/></PrivateRoutes>}/>
           <Route path='checkout' element={<PrivateRoutes><Checkout/></PrivateRoutes>}/>
+          <Route path='checkout/:id' element={<PrivateRoutes><Checkout/></PrivateRoutes>}/>
           <Route path='/:pagenotfound'element={<Home/>}/>
           </Route>
         </Routes>

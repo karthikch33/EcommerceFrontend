@@ -161,6 +161,7 @@ const Home = () => {
                             rating={element?.totalrating.toString()}
                             quantity={element?.quantity}
                             sold={element?.sold}
+                            id={element?._id}
                           />
                       );
                     }
@@ -234,6 +235,7 @@ const Home = () => {
         ))}
       </div>
     </Container>
+
      
     </>
   )

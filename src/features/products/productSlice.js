@@ -33,6 +33,7 @@ export const getSingleProduct = createAsyncThunk("product/getproduct",async(prod
 
 
 
+
 export const addToWishlist = createAsyncThunk('product/addToWishlist',async(productID,thunkAPI)=>{
     try {
         return await productServices.addToWishlistService(productID)
