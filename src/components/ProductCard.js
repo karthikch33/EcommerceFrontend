@@ -3,15 +3,17 @@ import ReactStars  from 'react-rating-stars-component'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import {AiTwotoneHeart} from 'react-icons/ai'
 import { Link, useLocation } from 'react-router-dom'
-import { addToWishlist } from '../features/products/productSlice'
+import { addToWishlist, getProducts } from '../features/products/productSlice'
 import { addCompareItem, getCompareItems, getWishlist, reset } from '../features/user/userSlice'
 import { toast } from 'react-toastify'
 import LoadingPage from './Loading'
 import { message } from 'antd'
 const ProductCard = React.memo((props) => {
 
+ 
+
     const dispatch = useDispatch()
-    const {grid, datalist} = props
+    const {grid, datalist,hover} = props
     
     const {wishlist} = useSelector(state=>state.user,shallowEqual)
     const [wish,setWish] = useState(wishlist)
@@ -21,14 +23,15 @@ const ProductCard = React.memo((props) => {
     useEffect(()=>{
         dispatch(getWishlist(localStorage.getItem('user')? JSON.parse(localStorage.getItem('user'))._id:null))
         dispatch(getCompareItems(localStorage.getItem('user')? JSON.parse(localStorage.getItem('user'))._id:null))
-    },[])
-
-    useEffect(()=>{
+      },[])
+      
+      useEffect(()=>{
         setWish(wishlist)
-    },[wishlist,dispatch])
-
-    const handleWishlist = (productId)=>{
-            dispatch(addToWishlist(productId))
+      },[wishlist,dispatch])
+      
+      const handleWishlist = (productId)=>{
+        dispatch(addToWishlist(productId))
+          // if(!isWishlistLoading)
             setTimeout(()=>{
                 dispatch(getWishlist(localStorage.getItem('user')? JSON.parse(localStorage.getItem('user'))._id:null))
             },300)
@@ -61,20 +64,26 @@ const ProductCard = React.memo((props) => {
 
     let location = useLocation();
 
+    const smoothScroll = ()=>{
+      window.scrollTo({
+        top:'0',
+        behavior:'smooth'
+      })
+    }
+
   return (
     <>
         {
             Array.isArray(datalist) ? datalist?.map((element,i)=>{
                 return (
               <div className={` ${location.pathname === '/store' ? `gr-${grid}` : "col-12 col-sm-6 col-md-4 col-lg-3"} `} key={i}>
-            <div className='position-relative product-card'>
+            <div className='position-relative product-card' onClick={smoothScroll} style={{minHeight:"400px",maxHeight:"400px"}}>
                 <div className="wishlist-icon position-absolute">
-
                 {
                     (Array.isArray(wish) && wish?.some(item => item?._id?.includes(element?._id))) ?
                     <button className='border-0 bg-transparent' onClick={() => handleWishlist(element?._id)}><AiTwotoneHeart className='fs-3' style={{ color: "red" }} /></button>
                     :
-                    <button className='border-0 bg-transparent' onClick={() => handleWishlist(element?._id)}><img src="../images/wish.svg" alt="" style={{ width: "30px" }} /></button>
+                    <button className='border-0 bg-transparent' onClick={() => handleWishlist(element?._id)}><img src="../images/wish.svg" alt="" style={{ width: "30px" }} /> </button>
                 }
                 </div>
                 <Link className="" to={`/product/${element?._id}`}>
@@ -95,6 +104,7 @@ const ProductCard = React.memo((props) => {
                     value={parseInt(element?.totalrating)}
                     edit={false}
                     />
+                    
                     <p className={`description ${grid === 12 ? "d-block" : "d-none"}`}
                     dangerouslySetInnerHTML={{ __html: element?.description }}
                     ></p>

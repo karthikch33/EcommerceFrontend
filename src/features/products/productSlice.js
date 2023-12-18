@@ -10,6 +10,7 @@ const initialState = {
     isLoading:false,
     productList:"",
     singleProduct:"",
+    isWishlistLoading:false,
     message:""
 }
 
@@ -67,13 +68,13 @@ const productSlice = createSlice({
         .addCase(resetState,()=>initialState)
         buidler.addCase(addToWishlist.pending,(state)=>{
             state.isError = false
-            state.isLoading = true
+            state.isWishlistLoading = true
             state.isSuccess = false
         })
         .addCase(addToWishlist.fulfilled,(state,action)=>{
             state.isError = false
             state.isSuccess = true
-            state.isLoading = false
+            state.isWishlistLoading = false
         })
         .addCase(addToWishlist.rejected,(state,action)=>{
             state.isError = true

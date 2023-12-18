@@ -36,9 +36,6 @@ const OurStore = () => {
         dispatch(getProducts({sort,brand,tag,category,minPrice,maxPrice}))
     }
 
-    console.log(brands,categories,tags);
-
-
     useEffect(()=>{
         let newBrands = []
         let newCategory = []

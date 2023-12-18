@@ -11,7 +11,7 @@ import { BiGitCompare } from 'react-icons/bi';
 import { BsFillBalloonHeartFill } from 'react-icons/bs';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, getSingleProduct } from '../features/products/productSlice';
+import { addToWishlist, getProducts, getSingleProduct } from '../features/products/productSlice';
 import { addCompareItem, addToCart, getCart, getCompareItems, getWishlist } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
 import LoadingPage from '../components/Loading';
@@ -21,7 +21,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const getProductId = location.pathname.split('/')[2];
 
-  const { singleProduct } = useSelector((state) => state.product);
+  const { singleProduct,productList } = useSelector((state) => state.product);
   const { wishlist, compareItemsList, userCart } = useSelector((state) => state.user);
 
   const navigate = useNavigate()
@@ -41,6 +41,8 @@ const SingleProduct = () => {
       dispatch(getWishlist(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id : ''));
     }, [300]);
   };
+
+  
 
   const handleCompareList = (getProductId) => {
     dispatch(addCompareItem(getProductId));
@@ -62,6 +64,14 @@ const SingleProduct = () => {
     }, 500);
   };
 
+  const [tag,setTag] = useState(null)
+  const [category,setCategory] = useState(null)
+  // const {productList} = useSelector(state=>state?.product)
+
+const getAllProducts = ()=>{
+    dispatch(getProducts({category}))
+}
+
   useEffect(() => {
     setWish(wishlist);
     setCompareItems(compareItemsList);
@@ -73,9 +83,17 @@ const SingleProduct = () => {
     }
   }, [getProductId]);
 
+  
+
   useEffect(() => {
     setCurrentProduct(singleProduct);
+    setCategory(singleProduct?.category)
+    setTag(singleProduct?.tag)
   }, [singleProduct]);
+
+  useEffect(()=>{
+    getAllProducts()
+  },[currentProduct])
 
   const copyToClipboard = (text) => {
     var textField = document.createElement('textarea');
@@ -94,25 +112,33 @@ const SingleProduct = () => {
       navigate(`/checkout/${productId}`)
   }
 
+  const smoothScroll = () => {
+      const smoothScrollTo = document.querySelector('.review-form');
+      smoothScrollTo.scrollIntoView({ behavior: 'smooth' });
+    };
+
+   const [currentImage,setCurrentImage] = useState(0)
+
+
   return (
     <>
       <Meta title={'Product Name'} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper">
         <div className="row">
-          <div className="col-md-6 mb-4 order-md-1 order-2">
+          <div className="col-md-6 mb-4 order-md-1 order-2 d-none d-md-flex flex-column">
             <div className="main-product-image">
-              <div className="d-flex justify-content-center align-items-center">
-                {/* <ReactImageZoom {...props} /> */}
+              <div className="d-flex justify-content-center align-items-center" style={{maxHeight:"500px",minHeight:"500px"}}>
                 <img
                   src={
                     currentProduct !== undefined
                       ? Array.isArray(currentProduct?.images)
-                        ? currentProduct?.images[0].url
+                        ? currentProduct?.images[currentImage].url
                         : '../images/tab.jpg'
                       : '../images/tab.jpg'
                   }
-                  className="img-fluid h-100"
+                  className="img-fluid"
+                  style={{maxHeight:"400px",minHeight:"400px"}}
                   alt=""
                 />
               </div>
@@ -120,8 +146,8 @@ const SingleProduct = () => {
             <div className="other-product-images d-flex flex-wrap gap-3 justify-content-center align-items-center">
               {currentProduct?.images &&
                 currentProduct?.images.map((image, index) => (
-                  <div key={index}>
-                    <img src={image.url} className="img-fluid" style={{ objectFit: 'contain' }} alt="" />
+                  <div key={index} >
+                    <img src={image.url} className="img-fluid" onClick={()=>setCurrentImage(index)} style={{ objectFit: 'contain' }} alt="" />
                   </div>
                 ))}
             </div>
@@ -137,10 +163,22 @@ const SingleProduct = () => {
                   <ReactStars size={20} count={5} value={currentProduct?.totalrating ? currentProduct?.totalrating : 2} edit={false} />
                   <p className="mb-0">(2 Reviews)</p>
                 </div>
-                <a href="#" className="text-dark mb-3">
+                <label className="text-dark mb-3 writeareview"onClick={smoothScroll} style={{cursor:"pointer"}}>
                   Write a Review
-                </a>
+                </label>
               </div>
+            <div className='d-flex gap-3 d-lg-none scroll d-md-none' style={{ maxHeight:"500px",minHeight:"500px", overflowX: 'scroll' }}>
+              {currentProduct?.images &&
+                currentProduct?.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.url}
+                    className="img-fluid"
+                    style={{ objectFit: 'contain', marginRight: '10px' }}  // Add margin to create space between images
+                    alt=""
+                  />
+                ))}
+                </div>  
               <div className="border-bottom">
                 <div className="d-flex gap-2 align-items-center">
                   <h3 className="product-heading">Brand:</h3>
@@ -247,10 +285,98 @@ const SingleProduct = () => {
                     </Space>
                   )}
                 </div>
+                <div className="col-12 scroll" style={{maxHeight:"500px",overflow:"scroll"}}>
+                <h4 className="fs-2 ps-4 pt-2">Description</h4>
+                <p className="bg-white p-3" dangerouslySetInnerHTML={{ __html: currentProduct?.description }}></p>
+            </div>
               </div>
             </div>
           </div>
         </div>
+        <div className="row mt-4">
+                <div className="col-12">
+                <section className="reviews-wrapper home-wrapper-2 scroll"  style={{maxHeight:"500px",overflow:"scroll"}}>
+                <div className="container-xxl">
+                    <div className="row">
+                        <div className="col-12 ">
+                            <div className="review-head mt-4 d-flex justify-content-between align-items-end">
+                                <div>
+                                    <h5>Customer Reviews</h5>
+                                    <div className="d-flex gap-10 align-items-center">
+                                    <ReactStars
+                                    size={20}
+                                    count={5}
+                                    value={4}
+                                    edit={false}
+                                    />
+                                    <p className='mb-0'>Based On 2 Reviews</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="review-form">
+                            <h4>Write Your Review</h4>
+                        <form action="" className='gap-15 d-flex flex-column'>
+                            <div className="form-floating gap-15 ">
+                                <textarea name="" id="" cols="30" rows="10" className='w-100 form-control' placeholder='Comments'></textarea>
+                                <label htmlFor="name" className='form-label'>Comments</label>
+                            </div>
+                            <div className='d-flex justify-content-end'>
+                            <button type='submit' className='button'>Submit Review</button>
+                            </div>
+                        </form>
+                        </div>
+
+                        <div className="reviews">
+                            <div className="review mt-4">
+                                <div className="d-flex align-items-center gap-10">
+                                    <h6 className='mb-0 '>Karthik</h6>
+                            <ReactStars
+                                    size={20}
+                                    count={5}
+                                    value={4}
+                                    edit={false}
+                                    />
+                                </div>
+                            <p className='mt-3 mb-0'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto enim temporibus iure. Atque nobis itaque, placeat molestiae temporibus laudantium quod laborum exercitationem est eveniet. Iure itaque voluptatem esse cum numquam.</p>
+                            </div>
+                            <div className="review mt-4">
+                                <div className="d-flex align-items-center gap-10">
+                                    <h6 className='mb-0 '>Yogendra</h6>
+                            <ReactStars
+                                    size={20}
+                                    count={5}
+                                    value={4}
+                                    edit={false}
+                                    />
+                                </div>
+                            <p className='mt-3 mb-0'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto enim temporibus iure. Atque nobis itaque, placeat molestiae temporibus laudantium quod laborum exercitationem est eveniet. Iure itaque voluptatem esse cum numquam.</p>
+                            </div>
+                            <div className="review mt-4">
+                                <div className="d-flex align-items-center gap-10">
+                                    <h6 className='mb-0 '>Aditya</h6>
+                            <ReactStars
+                                    size={20}
+                                    count={5}
+                                    value={4}
+                                    edit={false}
+                                    />
+                                </div>
+                            <p className='mt-3 mb-0'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto enim temporibus iure. Atque nobis itaque, placeat molestiae temporibus laudantium quod laborum exercitationem est eveniet. Iure itaque voluptatem esse cum numquam.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                </div>
+          </div>
+                <h3 className='section-heading mt-4'>Similar Products</h3>
+          <div className="row mt-4 scroll"  style={{overflowX:'scroll',maxWidth:"90vw",maxHeight:"500px"}}>
+              <div className="col-12 d-flex">
+              <ProductCard datalist={productList} hover={false}/>
+              </div>
+            </div>
       </Container>
     </>
   );
