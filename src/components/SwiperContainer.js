@@ -27,6 +27,7 @@ const SwiperContainer = () => {
       autoplay={{
         delay:2000
       }}
+      zIndex={-999}
     > 
     {
     CarouselData?.map((element,i)=>{

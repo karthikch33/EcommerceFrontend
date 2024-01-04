@@ -53,8 +53,8 @@ const SignUp = () => {
                     <div className="row">
                         <div className="col-12">
                             <div className='login-card'>
-                            <h3 className='text-center fs-2'>SignUp</h3>
-                        <form action="" className='gap-15 d-flex flex-column' onSubmit={formik.handleSubmit}>
+                            <h3 className='text-center fs-2 p-4'>SignUp</h3>
+                        <form action="" className='gap-15 d-flex flex-column p-3' onSubmit={formik.handleSubmit}>
 
                             <CustomInput type="text" name='firstname' className='' id="firstname"  placeholder='FirstName' value={formik.values.firstname} onChange={formik.handleChange("firstname")} />
 

@@ -63,51 +63,56 @@ const Home = () => {
 
   useEffect(()=>{
     if(Array.isArray(products))
-    setFilteredFeaturedProducts(products?.filter(element=>element?.tags?.includes('Featured')))
+    setFilteredFeaturedProducts(products?.filter(element=>element?.tags?.includes('Gaming')))
   },[products])
 
 
   return (
     <>
      <Meta title="Home"/>
-     <div class1="home-wrapper-1 py-5">
-     <div className="row " style={{width:"99.7vw"}}>
-          <SwiperContainer/>
-     </div>
-     </div>
+     <div className="home-wrapper-1">
+  <div className="row" style={{ width: "99.7vw", zIndex: 1 }}>
+    <SwiperContainer />
+  </div>
+</div>
 
-     <Container className="home-wrapper-3 py-5">
-      <Row className='py-5'>
-        <h1 className='fs-2 fw-bolder my-3'>Categories</h1>
-        {categories.map((category, index) => (
-          <Col key={index} xs={12} sm={6} md={4} lg={3} >
-            <div className="categories mb-4" onClick={()=>getAllProducts(category?.title)} style={{cursor:"pointer"}}>
-              <div className='d-flex align-items-center justify-content-center w-100'>
-                <div className="text-center">
-                  <h6>{category.title}</h6>
-                  <p>{category.count} </p>
-                </div>
-                <img src={category.image} alt={category.title} className="img-fluid" />
-              </div>
+<Container className="home-wrapper-3 py-5">
+  <Row className="py-5 zIndex">
+    <h1 className="fs-2 fw-bolder my-3 text-white">Categories</h1>
+    {categories.map((category, index) => (
+      <Col key={index} xs={12} sm={6} md={4} lg={3} className='glowing'>
+        <div
+          className="categories mb-4"
+          onClick={() => getAllProducts(category?.title)}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="d-flex align-items-center justify-content-center w-100 ">
+            <div className="text-center">
+              <h6>{category.title}</h6>
+              <p>{category.count}</p>
             </div>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+            <img src={category.image} alt={category.title} className="img-fluid" />
+          </div>
+        </div>
+      </Col>
+    ))}
+  </Row>
+</Container>
+
 
      
      
      <Container class1="featured-wrapper py-5 home-wrapper-2">
-     <div className="row">
-              <div className="col-12">
                 <h3 className='section-heading'>Featured Collections</h3>
+     <div className="row d-flex flex-wrap scroll" style={{maxWidth:'100vw',overflowX:'scroll'}}>
+              <div className="col-12">
               </div>
               <ProductCard datalist={filterdFeaturedProducts}/>
             </div>
      </Container>
 
-
-      {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
+{/* 
+      <Container class1="famous-wrapper py-5 home-wrapper-2">
       <div className="row ">
             <div className="col-3 ">
               <div className="famous-card position-relative">

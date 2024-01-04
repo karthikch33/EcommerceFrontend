@@ -157,16 +157,16 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = true
             state.isLoading = false
-            if(state.isSuccess === true)
+            if(action.payload?.status === 201)
             toast.info("User Created Successfully")
+            else if(action.payload?.status === 404)
+            toast.error('User Not Created')
         })
         .addCase(registerUser.rejected,(state,action)=>{
             state.isError = true
             state.isLoading = false
             state.isSuccess = false
             state.message = action.error
-            if(state.isError === true)
-            toast.info("User Not Created")
         })
         .addCase(resetState,()=>initialState)
         buidler.addCase(loginUser.pending,(state,action)=>{
@@ -179,15 +179,20 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.user = action.payload
-            if(state.isSuccess === true)
+            if(action.payload?.refreshToken!==undefined)
             {
-                state.userRefreshToken = action.payload?.token
+                state.userRefreshToken = action.payload?.refreshToken
                 localStorage.setItem("user",JSON.stringify(action.payload))
                 toast.info("User Logged In Successfully")
                 setTimeout(()=>{
                     window.location.reload()
                 },2000)
             }
+            else if(state.user?.status === 404 )
+            toast.error('Password Not Matched')
+            else if(state.user?.status === 405 )
+            toast.info('User Not Found')
+
         })
         .addCase(loginUser.rejected,(state,action)=>{
             state.isError = true

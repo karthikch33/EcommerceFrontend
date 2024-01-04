@@ -18,7 +18,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isError, isSuccess } = useSelector((state) => state.user);
+  const { isError, user } = useSelector((state) => state.user);
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +31,7 @@ const Login = () => {
     onSubmit: (values) => {
       dispatch(loginUser(values));
       dispatch(resetState());
-      if (isSuccess) {
+      if (user?.refreshToken !==undefined) {
         navigate('/');
       }
     },

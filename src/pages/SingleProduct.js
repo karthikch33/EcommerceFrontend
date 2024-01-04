@@ -4,6 +4,7 @@ import BreadCrumb from '../components/BreadCrumb';
 import ReactStars from 'react-rating-stars-component';
 import ProductCard from '../components/ProductCard';
 import ReactImageZoom from 'react-image-zoom';
+import {useFormik} from 'formik'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Space } from 'antd';
 import Color from '../components/Color';
@@ -118,7 +119,23 @@ const getAllProducts = ()=>{
     };
 
    const [currentImage,setCurrentImage] = useState(0)
+   const [rating1, setRating1] = useState(0);
+   const handleRatingChange1 = (newRating) => {
+    setRating1(newRating);
+    };
 
+    const formik = useFormik({
+      initialValues:{
+        comment:'',
+        star:'',
+        name:"",
+      },
+      onSubmit:(values)=>{
+        formik.values.star = rating1
+        formik.values.name = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))?.firstname:<>{toast.error('Login Required')}</>
+        dispatch()
+      }
+    })
 
   return (
     <>
@@ -317,9 +334,20 @@ const getAllProducts = ()=>{
                         
                         <div className="review-form">
                             <h4>Write Your Review</h4>
-                        <form action="" className='gap-15 d-flex flex-column'>
+                        <form onSubmit={formik.handleSubmit} className='gap-15 d-flex flex-column'>
+                          <div className='d-flex justify-content-around align-items-center'>
+                          <label htmlFor="">Overall Rating</label>
+                        <ReactStars
+                              count={5}
+                              onChange={handleRatingChange1}
+                              size={24}
+                              value={rating1}
+                              color="grey"
+                              activeColor="orange"
+                          />
+                          </div>
                             <div className="form-floating gap-15 ">
-                                <textarea name="" id="" cols="30" rows="10" className='w-100 form-control' placeholder='Comments'></textarea>
+                                <textarea name="comment" onChange={formik.handleChange('comment')} value={formik.values.comment} id="" cols="30" rows="10" className='w-100 form-control' placeholder='Comments'></textarea>
                                 <label htmlFor="name" className='form-label'>Comments</label>
                             </div>
                             <div className='d-flex justify-content-end'>
