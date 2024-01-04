@@ -60,6 +60,10 @@ const Header = () => {
         window.location.reload()
     }
 
+    useEffect(()=>{
+        dispatch(getProducts({}))
+    },[])
+
     const getAllProducts = (filter)=>{
         setCategory(filter)
         navigate('/store')
