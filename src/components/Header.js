@@ -134,7 +134,7 @@ const Header = () => {
                     </div>
             <div className="col-md-2 col-12 order-md-1 order-2 mb-3 mb-md-0 d-flex justify-content-center gamechanger5 toogle-display">
                 <h1>
-                    <Link className='text-white'>AppC</Link>
+                    <Link className='text-white' to={'/'}>AppC</Link>
                 </h1>
             </div>
             
