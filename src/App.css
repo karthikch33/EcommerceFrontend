@@ -992,3 +992,36 @@ ion-icon{
 
 
 /* Swiper Ends Here */
+
+
+/* IP Starts Here */
+.containerIP {
+  text-align: center;
+  padding: 20px;
+  min-height: 40vh;
+}
+
+.glow-box {
+  display: inline-block;
+  padding: 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff8a00, #e52e71, #3a1c71, #833ab4, #3498db, #2ecc71);
+  background-size: 600% 300%;
+  animation: glowAnimation 4s infinite linear;
+  color: #fff;
+}
+
+.heading {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+@keyframes glowAnimation {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+/* IP Ends Here */
