@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Timer = () => {
-  const endDate = new Date('2024-01-31T23:59:59'); // Replace with your fixed end date
+  const endDate = new Date('2024-03-31T23:59:59'); // Replace with your fixed end date
 
   const [timer, setTimer] = useState(calculateTimeRemaining());
 
