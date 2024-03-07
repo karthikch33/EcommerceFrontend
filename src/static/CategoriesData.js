@@ -5,7 +5,7 @@ const categories = [
       image: 'images/camera.jpg',
     },
     {
-      title: 'Smart TV',
+      title: 'Smart Tv',
       count: '15 Items',
       image: 'images/tv.jpg',
     },
