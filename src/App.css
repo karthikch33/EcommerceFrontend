@@ -1063,3 +1063,76 @@ ion-icon{
     transform: rotate(1turn);
   }
 }
+
+
+#checkbox {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  max-width: 70px;
+  max-height: 70px;
+  background-color: rgb(99, 99, 99);
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  transform: scale(0.8);
+  top:-8px;
+  /* left: -20px; */
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgb(126, 126, 126);
+  box-shadow: 0px 0px 3px rgb(2, 2, 2) inset;
+}
+.switch svg {
+  width: 1.2em;
+}
+.switch svg path {
+  fill: rgb(48, 48, 48);
+}
+#checkbox + .switch {
+  box-shadow: 0px 0px 1px rgb(16, 223, 47) inset,
+    0px 0px 2px rgb(16, 223, 47) inset, 0px 0px 10px rgb(16, 223, 47) inset,
+    0px 0px 40px rgb(16, 223, 47), 0px 0px 100px rgb(16, 223, 47),
+    0px 0px 5px rgb(16, 223, 47);
+  border: 2px solid rgb(255, 255, 255);
+  background-color: rgb(146, 180, 184);
+}
+#checkbox + .switch svg {
+  filter: drop-shadow(0px 0px 5px rgb(16, 223, 47));
+}
+#checkbox + .switch svg path {
+  fill: rgb(255, 255, 255);
+}
+
+
+.card {
+  box-sizing: border-box;
+  width: 190px;
+  height: 254px;
+  background: rgba(217, 217, 217, 0.58);
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 17px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  font-weight: bolder;
+  color: black;
+}
+
+.card:hover {
+  border: 1px solid black;
+  transform: scale(1.05);
+}
+
+.card:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}
