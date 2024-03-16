@@ -24,6 +24,7 @@ import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
+import Demo from './pages/Demo';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Layout/>}>
+          <Route path='/home' element={<Demo/>}></Route>
           <Route index element={<Home/>}/>
           <Route path='about' element={<About/>}/>
           <Route path='contact' element={<PrivateRoutes><Contact/></PrivateRoutes>}/>

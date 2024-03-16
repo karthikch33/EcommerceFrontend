@@ -69,7 +69,7 @@ const Wishlist = () => {
             </div>}
     </div>:
 </Container>
-
+    <h1 className='text-white'>Hello from Tailwind Css !!</h1>
 
     </>
   )
