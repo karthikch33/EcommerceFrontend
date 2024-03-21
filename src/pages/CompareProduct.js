@@ -36,8 +36,7 @@ const CompareProduct = () => {
              <div className="row">
         {Array.isArray(itemslist) && itemslist.length > 0
             ? itemslist.map((element, i) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mx-3 my-3"style={{boxShadow:"1px 1px 0px 3px rgba(0,0,0,0.2)"}} key={i}>
-                    <Link to={`/product/${element?._id}`}>
+                <div className="col-lg-3 col-md-4 col-sm-6 cardstyle col-12 mx-3 my-3"key={i}>
                     <div className="compare-product-card position-relative my-3">
                         <img
                             src="images/cross.svg"
@@ -45,6 +44,7 @@ const CompareProduct = () => {
                             className="position-absolute cross img-fluid"
                             onClick={() => handleRemover(element?._id)}
                         />
+                    <Link to={`/product/${element?._id}`}>
                         <div className="product-card-image d-flex align-item-center justify-content-center">
                             <img
                                 src={element?.images[0]?.url}
@@ -86,8 +86,8 @@ const CompareProduct = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </Link>
+                    </div>
                     </div>
             ))
             : <div className='row'>
