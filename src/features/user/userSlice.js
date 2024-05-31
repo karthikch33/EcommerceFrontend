@@ -192,6 +192,8 @@ export const authSlice = createSlice({
             toast.error('Password Not Matched')
             else if(state.user?.status === 405 )
             toast.info('User Not Found')
+            else if(state.user?.status === 409)
+            toast.error('Account Blocked')
 
         })
         .addCase(loginUser.rejected,(state,action)=>{
