@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import serverServices from "./serverService";
+import { toast } from "react-toastify";
 
 const initialState = {
     isError:false,
@@ -36,6 +37,9 @@ const serverSlice = createSlice({
             localStorage.setItem('server', JSON.stringify({ server: 'ONIn' }));
             else if(action.payload?.status === 404)
             localStorage.removeItem('server')
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
+            
     })
     .addCase(serverOnOrOff.rejected,(state,action)=>{
         state.isError = true

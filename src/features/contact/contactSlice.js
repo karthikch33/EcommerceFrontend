@@ -40,6 +40,8 @@ const contactSlice = createSlice({
             {
                 toast.error('Enquiry Failed To Submit')
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
        })
         .addCase(createEnquiry.rejected,(state,action)=>{
             state.isError = true

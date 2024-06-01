@@ -58,6 +58,8 @@ const productSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.productList = action.payload
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getProducts.rejected,(state,action)=>{
             state.isError = true
@@ -75,6 +77,8 @@ const productSlice = createSlice({
             state.isError = false
             state.isSuccess = true
             state.isWishlistLoading = false
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(addToWishlist.rejected,(state,action)=>{
             state.isError = true
@@ -92,6 +96,9 @@ const productSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.singleProduct = action.payload
+            console.log(action.payload);
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getSingleProduct.rejected,(state,action)=>{
             state.isError = true

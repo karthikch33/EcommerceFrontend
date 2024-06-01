@@ -161,6 +161,8 @@ export const authSlice = createSlice({
             toast.info("User Created Successfully")
             else if(action.payload?.status === 404)
             toast.error('User Not Created')
+            else if(action.payload?.status === 403)
+            toast.error('Session Time Out Login Again')
         })
         .addCase(registerUser.rejected,(state,action)=>{
             state.isError = true
@@ -212,6 +214,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.wishlist = action.payload
+            if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getWishlist.rejected,(state,action)=>{
             state.isError = true
@@ -229,6 +233,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.compareItemsList = action.payload?.compareItems
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getCompareItems.rejected,(state,action)=>{
             state.isError = true
@@ -247,6 +253,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.alreadyExist = action.payload?.alreadyExist
+            if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(addCompareItem.rejected,(state,action)=>{
             state.isError = true
@@ -275,6 +283,8 @@ export const authSlice = createSlice({
             {
                 toast.info('Product Decremented to cart successfully')
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(addToCart.rejected,(state,action)=>{
             state.isError = true
@@ -292,6 +302,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.userCart = action.payload
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getCart.rejected,(state,action)=>{
             state.isError = true
@@ -314,6 +326,8 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isSuccess = false
             state.message = action.error
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         buidler.addCase(createAnOrder.pending,(state,action)=>{
             state.isError = true
@@ -330,6 +344,8 @@ export const authSlice = createSlice({
                 toast.success("Ordered Placed Navigating To Home")
                 state.orderPlaced = "Success"
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
             else
             {
                 toast.error("Something Went Wrong")
@@ -350,6 +366,8 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = true
             state.isLoading = false
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(emptyEntireCart.rejected,(state,action)=>{
             state.isError = true
@@ -372,6 +390,8 @@ export const authSlice = createSlice({
             {
                 toast.success('Updated Successfully')
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
             else{
                 if(state.updatedProfile?.status && state.updatedProfile?.error?.codeName === 'DuplicateKey')
                 if(state.updatedProfile?.error?.keyPattern?.mobile)
@@ -398,6 +418,8 @@ export const authSlice = createSlice({
             {
                 localStorage.setItem('user',JSON.stringify(action.payload))
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
 
         })
         .addCase(getUser.rejected,(state,action)=>{
@@ -419,6 +441,8 @@ export const authSlice = createSlice({
             {
                 toast.success("Email Sent To Provided Mail")
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(forgotpasswordToken.rejected,(state,action)=>{
             state.isError = true
@@ -443,6 +467,8 @@ export const authSlice = createSlice({
             {
                 toast.success('Password Updated')
             }
+            else if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(resetPassword.rejected,(state,action)=>{
             state.isError = true

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import BlogServices from "./blogService";
-
+import { toast } from "react-toastify";
 
 
 const initialState = {
@@ -43,6 +43,8 @@ const blogSlice = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.FetchedBlogs = action.payload
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getAllBlogs.rejected,(state,action)=>{
             state.isError = true
@@ -60,6 +62,8 @@ const blogSlice = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.FetchedBlog = action.payload
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
         })
         .addCase(getABlog.rejected,(state,action)=>{
             state.isError = true
