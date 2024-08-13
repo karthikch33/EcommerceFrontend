@@ -18,8 +18,11 @@ const OurStore = () => {
 
     // Filter States
     const [tag,setTag] = useState(null)
+    const [tag2,setTag2] = useState(null)
     const [category,setCategory] = useState(null)
+    const [category2,setCategory2] = useState(null)
     const [brand,setBrand] = useState(null)
+    const [brand2,setBrand2] = useState(null)
     const [minPrice,setMinPrice] = useState(null)
     const [maxPrice,setMaxPrice] = useState(null)
     const [sort,setSort] = useState(null)
@@ -49,9 +52,16 @@ const OurStore = () => {
             newTags.push(element?.tags)    
             // newColors.push(element?.color)
         }
-        setBrands(newBrands)
-        setCategories(newCategory)
-        setTags(newTags)
+        if (brand === null) {
+          setBrands(newBrands);
+        } 
+       if (category === null) {
+          setCategories(newCategory);
+        } 
+         if (tag === null) {
+          setTags(newTags);
+        }
+        
     },[productList])
 
     useEffect(() => {
@@ -107,13 +117,13 @@ const OurStore = () => {
           <h4>Product Categories</h4>
           <div className='product-tags d-flex flex-wrap align-items-center gap-10'>
             {categories && [...new Set(categories)].map((element, i) => (
-              <span className='badge bg-light text-dark rounded-3 py-2' key={i} onClick={() => setCategory(element)}>{element}</span>
+              <span className='badge bg-light text-dark rounded-3 py-2' style={{cursor:"pointer"}} key={i} onClick={() => setCategory(element)}>{element}</span>
             ))}
           </div>
           <h4 className='my-3'> Product Brands  </h4>
           <div className="product-tags d-flex flex-wrap align-items-center gap-10">
             {brands && [...new Set(brands)].map((element, i) => (
-              <span className='badge bg-light text-dark rounded-3 py-2' onClick={() => setBrand(element)} key={i}>{element}</span>
+              <span className='badge bg-light text-dark rounded-3 py-2'   style={{cursor:"pointer"}} onClick={() => setBrand(element)} key={i}>{element}</span>
             ))}
           </div>
           <div>
@@ -134,7 +144,7 @@ const OurStore = () => {
               </h3>
               <div className="product-tags d-flex flex-wrap align-items-center gap-10">
                 {tags && [...new Set(tags)].map((element, i) => (
-                  <span className='badge bg-light text-dark rounded-3 py-2' onClick={() => setTag(element)} key={i}>{element}</span>
+                  <span className='badge bg-light text-dark rounded-3 py-2'  style={{cursor:"pointer"}} onClick={() => setTag(element)} key={i}>{element}</span>
                 ))}
               </div>
             </div>

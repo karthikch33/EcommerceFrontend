@@ -35,12 +35,11 @@ const Wishlist = () => {
          <Meta title={"WishList"}/>  
         <BreadCrumb title="Wishlist"/>
         <Container fluid className="wishlist-wrapper home-wrapper-2 py-5">
-    <div className="row">
+    <div className="row d-flex justify-content-between">
         {wish?.length >0 ? Array.isArray(wish) &&
             wish?.map((element, i) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={i} style={{ marginBottom: "20px" }}>
+                <div className="col-lg-3 col-md-4 col-sm-6 col-12 mx-3 my-3" key={i} style={{ marginBottom: "20px",border:"5px solid navy",borderRadius:"5%" }}>
                     <div className="wishlist-card position-relative" style={{ backgroundColor: "white" }}>
-
                         <img
                             src="images/cross.svg"
                             className="img-fluid cross position-absolute"
@@ -51,11 +50,11 @@ const Wishlist = () => {
                         <Link to={`/product/${element?._id}`} className="wishlist-card-image d-flex align-items-center justify-content-center flex-column">
 
                             <div style={{ width: "100%", height: "270px" }} className="d-flex justify-content-center align-items-center">
-                                <img src={element?.images[0]?.url} style={{ maxWidth: "100%", maxHeight: "100%" }} className="img-fluid" alt="" />
+                                <img src={element?.images[0]?.url} style={{ maxWidth: "200px", height: "200px" }} className="img-fluid" alt="" />
                             </div>
 
                             <div className="bg-white ps-4 py-3">
-                                <h5 className="title">{element?.title}</h5>
+                                <h5 className="title">{element?.title.substring(0,40)+".........."}</h5>
                                 <h6 className="price">&#8377; {element?.price}</h6>
                             </div>
 
@@ -67,7 +66,7 @@ const Wishlist = () => {
                 <label htmlFor=""className='text-dark fs-1 text-center w-100 mb-4' >NO ITEMS IN FAVORITE LIST</label>
             </div>
             </div>}
-    </div>:
+    </div>
 </Container>
     <h1 className='text-white'>Hello from Tailwind Css !!</h1>
 

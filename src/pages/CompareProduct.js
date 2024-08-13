@@ -32,12 +32,12 @@ const CompareProduct = () => {
     <>
         <Meta title={"Compare Product"}/>  
         <BreadCrumb title="Compare Products"/>
-        <Container fluid className="compare-product-wrapper py-5 home-wrapper-2 d-flex justify-content-center">
-             <div className="row">
+        <Container fluid className="home-wrapper-2" >
+             <div className="row d-flex justify-content-center">
         {Array.isArray(itemslist) && itemslist.length > 0
             ? itemslist.map((element, i) => (
-                <div className="col-lg-3 col-md-4 col-sm-6 cardstyle col-12 mx-3 my-3"key={i}>
-                    <div className="compare-product-card position-relative my-3">
+                <div className="col-lg-3 col-md-4 col-sm-6  col-12 mx-3 my-3"key={i}>
+                    <div className="compare-product-card position-relative my-3 d-flex justify-content-center">
                         <img
                             src="images/cross.svg"
                             alt="cross"
@@ -45,16 +45,16 @@ const CompareProduct = () => {
                             onClick={() => handleRemover(element?._id)}
                         />
                     <Link to={`/product/${element?._id}`}>
-                        <div className="product-card-image d-flex align-item-center justify-content-center">
+                        <div style={{ width: "100%", height: "270px"}} className=" ">
                             <img
                                 src={element?.images[0]?.url}
                                 className="img-fluid"
-                                style={{ maxWidth: "200px", maxHeight: "200px" }}
+                                style={{ maxWidth: "200px", height: "200px" }}
                                 alt="watch"
                             />
                         </div>
                         <div className="compare-product-details">
-                            <h5 className="title text-center my-3">{element?.title}</h5>
+                            <h5 className="title text-center my-3">{element?.title.substring(0,30)+"......."}</h5>
                             <h6 className="price text-end">&#8377; {element?.price}</h6>
                             <div className="product-detail">
                                 <h5>Brand</h5>

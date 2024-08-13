@@ -76,8 +76,9 @@ const Home = () => {
   </div>
 </div>
 
-<Container className="home-wrapper-3 py-5">
-  <Row className="py-5 zIndex bg-glowing">
+<Container className="home-wrapper-3">
+<h3 className='section-heading mt-5'>Categories</h3>
+  <Row className=''>
     {categories.map((category, index) => (
       <Col key={index} xs={12} sm={6} md={4} lg={3} >
         <div  
@@ -99,6 +100,25 @@ const Home = () => {
 </Container>
 
 
+
+<Container className="home-wrapper-2">
+      <div className="row justify-content-center ps-5">
+          <h1 className='section-heading mt-5'>Information</h1>
+        {services.map((service, index) => (
+          <Col key={index} className="col-12 col-md-6 col-lg-4">
+            <div className="services d-flex align-items-center flex-column flex-md-row gap-15 py-5">
+              <img src={service.image} alt="services" className="img-fluid" />
+              <div>
+                <h6>{service.title}</h6>
+                <p className="mb-0">{service.tagline}</p>
+              </div>
+            </div>
+          </Col>
+        ))}
+      </div>
+    </Container>
+
+
      
      
      <Container class1="featured-wrapper py-5 home-wrapper-2">
@@ -110,8 +130,11 @@ const Home = () => {
             </div>
      </Container>
 
-{/* 
-      <Container class1="famous-wrapper py-5 home-wrapper-2">
+
+    
+
+
+      {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
       <div className="row ">
             <div className="col-3 ">
               <div className="famous-card position-relative">
@@ -218,7 +241,7 @@ const Home = () => {
       </Container>
       
       
-      <Container class1="blog-wrapper py-5 home-wrapper-2">
+      {/* <Container class1="blog-wrapper py-5 home-wrapper-2">
       <div className="row">
               <div className="col-12">
                 <h3 className='section-heading'>Our Latest Blogs</h3>
@@ -229,27 +252,12 @@ const Home = () => {
                   })
                 }
             </div>
-      </Container>
+      </Container> */}
 
 
-      <Container className="home-wrapper-2" style={{marginBottom:"20px"}}>
-      <div className="row justify-content-center">
+     
 
-          <h1 className='fs-2 fw-bolder my-3'>Information</h1>
-
-        {services.map((service, index) => (
-          <Col key={index} className="col-12 col-md-6 col-lg-4">
-            <div className="services d-flex align-items-center flex-column flex-md-row gap-15 py-5">
-              <img src={service.image} alt="services" className="img-fluid" />
-              <div>
-                <h6>{service.title}</h6>
-                <p className="mb-0">{service.tagline}</p>
-              </div>
-            </div>
-          </Col>
-        ))}
-      </div>
-    </Container>
+      
 
      
     </>
