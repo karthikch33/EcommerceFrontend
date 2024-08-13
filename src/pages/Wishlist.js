@@ -35,7 +35,7 @@ const Wishlist = () => {
          <Meta title={"WishList"}/>  
         <BreadCrumb title="Wishlist"/>
         <Container fluid className="wishlist-wrapper home-wrapper-2 py-5">
-    <div className="row d-flex justify-content-between">
+    <div className="row d-flex justify-content-center">
         {wish?.length >0 ? Array.isArray(wish) &&
             wish?.map((element, i) => (
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12 mx-3 my-3" key={i} style={{ marginBottom: "20px",border:"5px solid navy",borderRadius:"5%" }}>
