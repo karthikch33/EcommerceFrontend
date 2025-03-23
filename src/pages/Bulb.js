@@ -18,14 +18,12 @@ const Bulb = () => {
 
   const {serverCondition} = useSelector(state=>state.server)
 
- 
-
   return (
     <>
     <div className="container-xxl text-center">
         <div className="row">
             <div className="col-12 d-flex justify-content-end ">
-                {serverCondition?.status === 201?<label htmlFor="">Server Is On</label>:<label htmlFor="">Waiting For Server Connection
+                {serverCondition?.status === 201?<label htmlFor="" className='server-white'>Server Is On</label>:<label htmlFor="" className='server-white'>Waiting For Server Connection
                 <LoadingDots/>
                 </label>}
                 {serverCondition?.status === 201?<div className='mt-2'>

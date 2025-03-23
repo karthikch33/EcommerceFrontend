@@ -49,7 +49,8 @@ const Blog = () => {
                     <div className="col-9">
                         <div className="d-flex flex-wrap gap-5">
                             {
-                                Array.isArray(FetchedBlogs) && FetchedBlogs.map((element,i)=>{
+                                Array.isArray(FetchedBlogs) && FetchedBlogs.map((element,i)=>
+                                    {
                                     return <BlogCard title={element?.title} descrpition={element?.description} category={element?.category} id={element?._id} image ={element?.images[0]?.url}  date={moment(element?.createdAt).format("MMMM Do YYYY, h:mm a")} key={i}/>
                                 })
                             }

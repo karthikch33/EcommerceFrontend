@@ -42,28 +42,15 @@ const Home = () => {
     dispatch(getProducts({}))
   },[])
 
-  const [category,setCategory] = useState(null)
-  const navigate = useNavigate()
-  const getAllProducts = (filter)=>{
-    setCategory(filter)
-    navigate('/store')
-    setTimeout(()=>{
-        dispatch(getProducts({category:filter}))
-    },100)
-}
-
   useEffect(()=>{
     setProducts(productList)
   },[productList])
   
   useEffect(()=>{
-    if(Array.isArray(products))
-    setFilteredPopularProducts(products?.filter(element=> element?.tags?.includes('Popular')))
-  },[products])
-
-  useEffect(()=>{
-    if(Array.isArray(products))
-    setFilteredFeaturedProducts(products?.filter(element=>element?.tags?.includes('Gaming')))
+    if(Array.isArray(products)){
+      setFilteredPopularProducts(products?.filter(element=> element?.tags?.includes('Popular')))
+      setFilteredFeaturedProducts(products?.filter(element=>element?.tags?.includes('Gaming')))
+    }
   },[products])
 
 
@@ -75,51 +62,6 @@ const Home = () => {
     <SwiperContainer />
   </div>
 </div>
-
-<Container className="home-wrapper-3">
-<h3 className='section-heading mt-5'>Categories</h3>
-  <Row className=''>
-    {categories.map((category, index) => (
-      <Col key={index} xs={12} sm={6} md={4} lg={3} >
-        <div  
-          className="categories mb-4 "
-          onClick={() => getAllProducts(category?.title)}
-          style={{ cursor: "pointer" }}
-        >
-          <div className="d-flex align-items-center cardcat justify-content-center w-100 ">
-            <div className="text-center">
-              <h6>{category.title}</h6>
-              <p>{category.count}</p>
-            </div>
-            <img src={category.image} alt={category.title} className="img-fluid blend" />
-          </div>
-        </div>
-      </Col>
-    ))}
-  </Row>
-</Container>
-
-
-
-<Container className="home-wrapper-2">
-      <div className="row justify-content-center ps-5">
-          <h1 className='section-heading mt-5'>Information</h1>
-        {services.map((service, index) => (
-          <Col key={index} className="col-12 col-md-6 col-lg-4">
-            <div className="services d-flex align-items-center flex-column flex-md-row gap-15 py-5">
-              <img src={service.image} alt="services" className="img-fluid" />
-              <div>
-                <h6>{service.title}</h6>
-                <p className="mb-0">{service.tagline}</p>
-              </div>
-            </div>
-          </Col>
-        ))}
-      </div>
-    </Container>
-
-
-     
      
      <Container class1="featured-wrapper py-5 home-wrapper-2">
                 <h3 className='section-heading'>Featured Collections</h3>
@@ -253,6 +195,23 @@ const Home = () => {
                 }
             </div>
       </Container> */}
+
+<Container className="home-wrapper-2">
+      <div className="row justify-content-center ps-5">
+          <h1 className='section-heading mt-5'>Information</h1>
+        {services.map((service, index) => (
+          <Col key={index} className="col-12 col-md-6 col-lg-4">
+            <div className="services d-flex align-items-center flex-column flex-md-row gap-15 py-5">
+              <img src={service.image} alt="services" className="img-fluid" />
+              <div>
+                <h6>{service.title}</h6>
+                <p className="mb-0">{service.tagline}</p>
+              </div>
+            </div>
+          </Col>
+        ))}
+      </div>
+    </Container>
 
 
      

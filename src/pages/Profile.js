@@ -5,7 +5,7 @@ import CustomInput from '../components/CustomInput'
 import { FaPencil } from "react-icons/fa6"
 import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Space } from 'antd'
 import { getUser, updateUser } from '../features/user/userSlice'
@@ -72,6 +72,7 @@ const Profile = () => {
         </>}
 
         </div>
+
         <Container classNam='container-xxl'>
             <div className="row">
                 <div className="col-12">
@@ -95,11 +96,21 @@ const Profile = () => {
                     <CustomInput type="number" placeholder="Mobile" name="mobile" value={formik.values.mobile} onChange={updateNow===true ? formik.handleChange('mobile'):emptyFunction} onBlur={formik.handleBlur('mobile')}/>
                     </div>  
                     
-                 <button type="submit" className="btn btn-primary my-3">{updateNow === true ? "Update" : "Profile Check"}</button>
+                    <div className="d-flex justify-content-between my-3">
+                    <button type="submit" className="btn btn-primary">
+                        {updateNow === true ? "Update" : "Profile Check"}
+                    </button>
+                    <Link className="" to={'/orders'}>
+                    <button type="button" className="btn btn-primary">
+                        My Orders
+                    </button>
+                    </Link>
+                    </div>
             </form>
                 </div>
             </div>
         </Container>
+
     </>
   )
 }

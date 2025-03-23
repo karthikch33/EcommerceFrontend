@@ -25,6 +25,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import Demo from './pages/Demo';
+import Orders from './pages/Orders';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path='blog/:id' element={<SingleBlog/>}/>
           <Route path='compare-product' element={<PrivateRoutes><CompareProduct/></PrivateRoutes>}/>
           <Route path='wishlist' element={<PrivateRoutes><Wishlist/></PrivateRoutes>}/>
+          <Route path='orders' element={<PrivateRoutes><Orders/></PrivateRoutes>}/>
           <Route path='login' element={<OpenRoute><Login/></OpenRoute>}/>
           <Route path='forgot-password' element={<ForgotPassword/>}/>
           <Route path='signup' element={<OpenRoute><SignUp/></OpenRoute>}/>

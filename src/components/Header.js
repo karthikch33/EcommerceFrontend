@@ -6,6 +6,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { getCart } from '../features/user/userSlice'
 import { getProducts } from '../features/products/productSlice';
+import Bulb from '../pages/Bulb';
 const Header = () => {
 
     const [isNavOpen, setIsNavOpen] = useState(false);
@@ -94,10 +95,10 @@ const Header = () => {
 
     const handleNavbar = ()=>{
        const navbar =   document.querySelector('.gamechanger')
-       const navbar2 =   document.querySelector('.gamechanger2')
+    //    const navbar2 =   document.querySelector('.gamechanger2')
        const navbar3 =   document.querySelector('.gamechanger3')
         navbar.classList.toggle('toogle-none')   
-        navbar2.classList.toggle('toogle-display')   
+        // navbar2.classList.toggle('toogle-display')   
         navbar3.classList.toggle('toogle-display')   
     }
 
@@ -197,31 +198,29 @@ const Header = () => {
 <header className='header-bottom'>
     <div className="container-xxl">
         <div className="row">
-            <div className="col-12">
-                <div className="menu-bottom d-flex align-items-center justify-content-around flex-column flex-md-row gap-30">
+            <div className="col-12" >
+                <div className="menu-bottom d-flex align-items-center flex-column flex-md-row py-3" >    
                     <div className='toogle-none gamechanger'>
                         <label htmlFor=""  className='text-white fs-3 toogle-none' style={{cursor:"pointer"}} onClick={handleNavbar}>Click To Expand 
                         </label>
                     </div>
-                    <div className="dropdown  gamechanger2 toogle-display">
-                        <button className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Show Categories
-                        </button>
-                        <ul className="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
-                            <li className="w-100"><button onClick={()=>getAllProducts('Mobile')} className="dropdown-item text-white w-100" to="#">Mobiles</button></li>
-                            <li className="w-100"><button onClick={()=>getAllProducts('Laptops')}  className="dropdown-item text-white w-100" to="#">Laptops</button></li>
-                            <li className="w-100"><button onClick={()=>getAllProducts("Washing Machines")} className="dropdown-item text-white w-100" to="#">Washing Machines</button></li>
-                        </ul>
-                    </div>
-                    <div className='menu-links  gamechanger3 toogle-display'>
-                        <div className="d-flex flex-column flex-md-row align-items-center gap-15">
+                    <div className='menu-links  gamechanger3 toogle-display w-100' >
+                        <div className="d-flex flex-column flex-md-row align-items-center justify-content-evenly">
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/">Home</NavLink>
-                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store">Items</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Mobile')}>Mobile</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Laptops')}>Laptops</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Washing Machines')}>Machines</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Cameras')}>Electronics</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/blogs">Blogs</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/contact">Contact</NavLink>
+                            <NavLink>   
                             {
-                                localStorage.getItem('user') && <button className="bg-transparent border-0 text-white fs-5" onClick={handleLogOut}>LogOut</button>
+                                localStorage.getItem('user') && <button className="bg-transparent border-0 text-white fs-5" onClick={handleLogOut}>Logout</button>
                             }
+                            </NavLink>
+                            <NavLink>
+                            <Bulb className='order-11'/>
+                            </NavLink>
                         </div>
                     </div>
                 </div>

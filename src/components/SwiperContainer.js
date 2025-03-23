@@ -19,7 +19,7 @@ const SwiperContainer = () => {
       spaceBetween={50}
       slidesPerView={'auto'}
       grabCursor={true}
-      navigation
+      // navigation
       centeredSlides={true}
       pagination={{ clickable: true }}
       scrollbar={{ draggable: true }}
