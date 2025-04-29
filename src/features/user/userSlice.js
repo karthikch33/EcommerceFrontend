@@ -271,19 +271,7 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = true
             state.isLoading = false
-            if(action.payload?.message === "Product Incremented to cart successfully")
-            {
-               toast.info("Product Incremented to cart successfully")
-            }
-            else if(action.payload?.message === "Product added to cart successfully")
-            {
-                toast.success('Product added to cart successfully')
-            }
-            else if(action.payload?.message === 'Product Decremented to cart successfully')
-            {
-                toast.info('Product Decremented to cart successfully')
-            }
-            else if(action.payload?.status === 403)
+            if(action.payload?.status === 403)
                 toast.error('Session Time Out Login Again')
         })
         .addCase(addToCart.rejected,(state,action)=>{

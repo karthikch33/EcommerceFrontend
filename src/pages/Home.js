@@ -1,57 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import Marquee from 'react-fast-marquee'
-import BlogCard from '../components/BlogCard'
 import ProductCard from '../components/ProductCard'
 import SpecialProduct from '../components/SpecialProduct'
 import Meta from '../components/Meta'
 import services from '../utils/Data'
-import categories from '../static/CategoriesData'
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import Container from '../components/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllBlogs } from '../features/blogs/blogSlice'
 import LoadingPage from '../components/Loading'
-import moment from 'moment'
 import { getProducts } from '../features/products/productSlice'
 import SwiperContainer from '../components/SwiperContainer'
-import { useNavigate } from 'react-router-dom'
 const Home = () => {
 
-
   const dispatch = useDispatch()
-  const {FetchedBlogs} = useSelector(state=>state.blogs)
-
-  const [blogs,setBlogs] = useState(null)
-
-  
-  useEffect(()=>{
-    dispatch(getAllBlogs())
-  },[])
-  
-  useEffect(()=>{
-    setBlogs(FetchedBlogs)
-  },[FetchedBlogs])
-  
-  const [products,setProducts] = useState(null)
   const [filterdPopularProducts,setFilteredPopularProducts] = useState(null)
   const [filterdFeaturedProducts,setFilteredFeaturedProducts] = useState(null)
+  const [filteredSpecialProducts,setFilteredSpecialProducts] = useState(null)
+  const [blogs,setBlogs] = useState(null)
 
-  const {productList} = useSelector(state=>state.product)
-
-  useEffect(()=>{
+  const handleIntialLoading = ()=>{
     dispatch(getProducts({}))
-  },[])
+    .then((response)=>{
+      const productsData = response?.payload;
+      if(Array.isArray(productsData)){
+        setFilteredPopularProducts(productsData?.filter(element=> element?.tags?.includes('Popular')))
+        setFilteredFeaturedProducts(productsData?.filter(element =>element?.tags?.includes('Gaming')))
+        setFilteredSpecialProducts(productsData?.filter(element => element?.tags?.includes('Special')))
+      }
+    })
+    dispatch(getAllBlogs())
+    .then((response)=>{
+      setBlogs(response?.payload)
+    })
+  }
 
   useEffect(()=>{
-    setProducts(productList)
-  },[productList])
-  
-  useEffect(()=>{
-    if(Array.isArray(products)){
-      setFilteredPopularProducts(products?.filter(element=> element?.tags?.includes('Popular')))
-      setFilteredFeaturedProducts(products?.filter(element=>element?.tags?.includes('Gaming')))
-    }
-  },[products])
+    handleIntialLoading();
+  },[])
 
 
   return (
@@ -127,13 +113,11 @@ const Home = () => {
               <h3 className='section-heading'>Special Products</h3>
             </div>
             <div className="row">
-                {products === null ? (
+                {filteredSpecialProducts === null ? (
                     <LoadingPage height={'40vh'} />
-                  ) : Array.isArray(products) && products?.map((element, i) => {
-                    if (element?.tags?.includes('Special')) {
-                      return (
+                  ) : filteredSpecialProducts?.map((element, i) => (
                           <SpecialProduct
-                          className="mb-2" 
+                            className="mb-2" 
                             title={element?.title}
                             brand={element?.brand}
                             price={element?.price}
@@ -143,10 +127,8 @@ const Home = () => {
                             sold={element?.sold}
                             id={element?._id}
                           />
-                      );
+                      ))
                     }
-                    return ""; 
-                  })}
                 </div>
           </div>
       </Container>
@@ -159,7 +141,7 @@ const Home = () => {
             </div>
             <div className="row">
             {
-                 filterdPopularProducts === null ? <LoadingPage  height={"40vh"}/> : Array.isArray(filterdPopularProducts) && <ProductCard datalist={filterdPopularProducts}/>
+              filterdPopularProducts === null ? <LoadingPage  height={"40vh"}/> : <ProductCard datalist={filterdPopularProducts}/>
             }
             </div>
       </Container>

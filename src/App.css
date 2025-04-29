@@ -441,10 +441,10 @@ footer .input-group span{
 .product-card .product-details h6{
   color: red;
   font-size: 13px;
-  
 }
 .product-card .product-details h5{
   font-size: 15px;
+  margin-bottom: -15px;
   color: var(--color-131921);
 }
 

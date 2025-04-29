@@ -5,21 +5,25 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCart, getCart } from "../features/user/userSlice";
 import Timer from "./Timer";
-const SpecialProduct = (props) => {
+import { message } from "antd";
+  const SpecialProduct = (props) => {
   const dispatch = useDispatch()
   const [color, setColor] = useState(null);
+
   const addProductToCart = (productId) => {
-    dispatch(
-      addToCart({
-        productId: productId,
-        color: color,
-        orderedQuantity: 1,
-      })
-    );
-    setTimeout(() => {
+    const cartData = {
+      productId: productId,
+      color: color,
+      orderedQuantity: 1,
+    }
+    dispatch(addToCart(cartData))
+    .then((response)=>{
+      const Cart_message = response?.payload?.message;
+      message.success(Cart_message)
       dispatch(getCart(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))?._id : ''));
-    }, 500);
+    })
   };
+  
   const { title, price, brand, image, rating, quantity, sold , id} = props;
   return (
     <Col xs={12} sm={6} md={6} lg={4}>

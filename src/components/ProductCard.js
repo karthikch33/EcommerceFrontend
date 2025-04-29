@@ -5,96 +5,74 @@ import { AiTwotoneHeart } from "react-icons/ai";
 import { message } from 'antd';
 import { Link, useLocation } from "react-router-dom";
 import { addToWishlist } from "../features/products/productSlice";
-import {
-  addCompareItem,
-  getCompareItems,
-  getWishlist,
-  reset,
-} from "../features/user/userSlice";
+import { addCompareItem,getCompareItems,getWishlist,reset} from "../features/user/userSlice";
 import LoadingPage from "./Loading";
 const ProductCard = React.memo((props) => {
   const dispatch = useDispatch();
   let location = useLocation();
+  
   const { grid, datalist } = props;
+  
   const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))._id
+    ? JSON.parse(localStorage.getItem("user"))?._id
     : "null";
 
-  const { wishlist } = useSelector((state) => state.user, shallowEqual);
-  const { alreadyExist } = useSelector((state) => state.user);
-
-  const [wish, setWish] = useState(wishlist);
-  const [duplicateSuccess, setDuplicateSuccess] = useState(true);
+  const [wish, setWish] = useState(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    dispatch(getWishlist(user));
-    dispatch(getCompareItems(user));
+    dispatch(getWishlist(user))
+    .then((response)=>{
+      setWish(response?.payload);
+    })
   }, []);
 
-  useEffect(() => {
-    setWish(wishlist);
-  }, [wishlist, dispatch]);
-
   const handleWishlist = (productId) => {
-    dispatch(addToWishlist(productId));
-    setTimeout(() => {
-      dispatch(getWishlist(user));
-    }, 300);
+    dispatch(addToWishlist(productId))
+    .then(()=>{
+      dispatch(getWishlist(user))
+      .then((response)=>{
+        setWish(response?.payload);
+      })
+    })
   };
 
   const handleCompare = (productId) => {
-    dispatch(addCompareItem(productId));
-  };
-
-  const [messageApi, contextHolder] = message.useMessage();
-  const key = 'updatable';
-  const key2 = 'updatable2';
-
-  useEffect(() => {
-    if (alreadyExist === true && duplicateSuccess) {
-      setDuplicateSuccess(false);
-      messageApi.open({
-        key,
-        type: 'loading',
-        content: 'Loading...',
-      });
-      setTimeout(() => {
-        messageApi.open({
+    const key = 'updatable';
+    messageApi.open({
+      key,
+      type: 'loading',
+      content: 'Loading...',
+    });
+    dispatch(addCompareItem(productId))
+    .then((response)=>{
+      const status = response?.payload['status']
+      if(status === 200){
+        messageApi?.open({
           key,
           type: 'success',
-          content: 'Added Successfully!',
-          duration: 2,
-        });
-        setDuplicateSuccess(false);
-          dispatch(reset());
-      }, 1000);
-
-    } else if (alreadyExist === true && duplicateSuccess) {
-      setDuplicateSuccess(false);
-      messageApi.open({
-        key,
-        type: 'loading',
-        content: 'Loading...',
-      });
-      setTimeout(() => {
-        messageApi.open({
-          key2,
+          content: 'Added To Compare List',
+          duration : 3,
+        })
+      }
+      else if(status === 403){
+        messageApi?.open({
+          key,
           type: 'success',
-          content: 'Already This Item Exists In Compare List',
-          duration: 2,
-        });
-        setDuplicateSuccess(true);
-          dispatch(reset());
-      }, 1000);
-    }
-  }, [alreadyExist, dispatch, duplicateSuccess]);
-
+          content: 'Removed From Compare List',
+          duration : 3,
+        })
+      }
+    })
+  };
+  
   const smoothScroll = () => {
     window.scrollTo({
       top: "0",
       behavior: "smooth",
     });
   };
+  // alert(grid)
 
   return (
     <>
@@ -168,10 +146,10 @@ const ProductCard = React.memo((props) => {
                   <div className="product-details">
                     <h6 className="brand">{element?.brand}</h6>
                     <h5 className="product-title">
-                      <p>
+                      <p className="fs-6">
                         {grid === 12
                           ? element?.title
-                          : element?.title.substr(0, 100) + "....."}
+                          : element?.title.substr(0, 65) + "....."}
                       </p>
                     </h5>
                     <ReactStars

@@ -38,10 +38,10 @@ const emptyEntireCartService = async()=>{
 }
 
 
-const addcompareItemService = async(userId)=>{
+const addcompareItemService = async(productId)=>{
     let response;
     if(localStorage.getItem('user'))
-     response = await axios.put(`${base_url}user/addcompareitem/${userId}`,{},config)
+     response = await axios.put(`${base_url}user/addcompareitem/${productId}`,{},config)
     else
     toast.error("Login Required")
     return response.data
