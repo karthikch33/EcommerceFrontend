@@ -18,15 +18,40 @@ const Home = () => {
   const [filterdFeaturedProducts,setFilteredFeaturedProducts] = useState(null)
   const [filteredSpecialProducts,setFilteredSpecialProducts] = useState(null)
   const [blogs,setBlogs] = useState(null)
+  const [cartItems,setCartItems] = useState(undefined)
 
+  const {userCart} = useSelector(state=>state.user)
+  useEffect(()=>{
+    setCartItems(userCart)
+    handleIntialLoading();
+  },[userCart]) 
+  
   const handleIntialLoading = ()=>{
     dispatch(getProducts({}))
     .then((response)=>{
       const productsData = response?.payload;
-      if(Array.isArray(productsData)){
+      if(Array.isArray(productsData) && userCart !== undefined)
+      {
         setFilteredPopularProducts(productsData?.filter(element=> element?.tags?.includes('Popular')))
         setFilteredFeaturedProducts(productsData?.filter(element =>element?.tags?.includes('Gaming')))
-        setFilteredSpecialProducts(productsData?.filter(element => element?.tags?.includes('Special')))
+        const filteredSpecialItems = productsData?.filter(element => element?.tags?.includes('Special'))
+        const addExtraKeyField = filteredSpecialItems?.map((element)=>{
+        const isAlreadyInCart  = userCart.length > 0 &&  userCart?.some(item => item?.productId?._id === element?._id)
+        if(isAlreadyInCart){
+        return{ 
+            ...element,
+            alreadyAdded : true
+        }
+      }
+      else{
+        return{
+         ...element,
+         alreadyAdded : false
+        }
+     }
+    })   
+        console.log(addExtraKeyField)
+        setFilteredSpecialProducts(addExtraKeyField)
       }
     })
     dispatch(getAllBlogs())
@@ -35,14 +60,9 @@ const Home = () => {
     })
   }
 
-  useEffect(()=>{
-    handleIntialLoading();
-  },[])
-
-
   return (
     <>
-     <Meta title="Home"/>
+     <Meta title="Home"/> 
      <div className="home-wrapper-1">
   <div className="row" style={{ width: "99.7vw", zIndex: 1 }}>
     <SwiperContainer />
@@ -57,10 +77,6 @@ const Home = () => {
               <ProductCard datalist={filterdFeaturedProducts}/>
             </div>
      </Container>
-
-
-    
-
 
       {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
       <div className="row ">
@@ -107,7 +123,7 @@ const Home = () => {
           </div>
       </Container> */}
 
-      <Container class1="special-wrapper py-5 home-wrapper-2">
+      <Container class1="special-wrapper home-wrapper-2">
       <div className="row">
             <div className="col-12">
               <h3 className='section-heading'>Special Products</h3>
@@ -125,6 +141,7 @@ const Home = () => {
                             rating={element?.totalrating.toString()}
                             quantity={element?.quantity}
                             sold={element?.sold}
+                            alreadyAdded = {element?.alreadyAdded}
                             id={element?._id}
                           />
                       ))
@@ -193,14 +210,7 @@ const Home = () => {
           </Col>
         ))}
       </div>
-    </Container>
-
-
-     
-
-      
-
-     
+    </Container>     
     </>
   )
 }

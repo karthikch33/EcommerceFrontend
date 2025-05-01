@@ -106,6 +106,14 @@ export const createAnOrder = createAsyncThunk('user/cart/order',async(orderData,
     }
 })
 
+export const getMyOrders = createAsyncThunk('user/getmyorders',async(thunkAPI)=>{
+    try {
+        return await userServices.getOrders()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+})
+
 export const getUser = createAsyncThunk('user/getUser',async(thunkAPI)=>{
     try {
         return await userServices.getUserService()
@@ -253,8 +261,6 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.alreadyExist = action.payload?.alreadyExist
-            if(action.payload?.status === 403)
-                toast.error('Session Time Out Login Again')
         })
         .addCase(addCompareItem.rejected,(state,action)=>{
             state.isError = true
@@ -327,17 +333,8 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isLoading = false
             state.orderedProduct = action.payload
-            if(state.isSuccess)
-            {
-                toast.success("Ordered Placed Navigating To Home")
-                state.orderPlaced = "Success"
-            }
-            else if(action.payload?.status === 403)
+            if(action.payload?.status === 403)
                 toast.error('Session Time Out Login Again')
-            else
-            {
-                toast.error("Something Went Wrong")
-            }
         })
         .addCase(createAnOrder.rejected,(state,action)=>{
             state.isError = true
@@ -358,6 +355,25 @@ export const authSlice = createSlice({
                 toast.error('Session Time Out Login Again')
         })
         .addCase(emptyEntireCart.rejected,(state,action)=>{
+            state.isError = true
+            state.isSuccess = false
+            state.isLoading = false
+            state.updatedProfile = action.error
+            state.message = action.error
+        })
+        buidler.addCase(getMyOrders.pending,(state)=>{
+            state.isLoading = true
+            state.isError = false
+            state.isSuccess = false
+        })
+        .addCase(getMyOrders.fulfilled,(state,action)=>{
+            state.isError = false
+            state.isSuccess = true
+            state.isLoading = false
+             if(action.payload?.status === 403)
+                toast.error('Session Time Out Login Again')
+        })
+        .addCase(getMyOrders.rejected,(state,action)=>{
             state.isError = true
             state.isSuccess = false
             state.isLoading = false

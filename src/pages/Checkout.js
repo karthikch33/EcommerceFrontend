@@ -18,7 +18,6 @@ const Checkout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const cartState = useSelector(state=>state.user.userCart)
-    const {orderPlaced} = useSelector(state=>state.user)
     const {singleProduct} = useSelector(state=>state.product)
 
     
@@ -33,28 +32,9 @@ const Checkout = () => {
         pincode:yup.number().required("PinCode is Required")
     })
 
-    useEffect(()=>{
-        if(orderPlaced==="Success")
-        orderRetained()
-    },[orderPlaced])
-
     const location = useLocation()
     const getLocation = location?.pathname.split('/')[2]
 
-
-    
-
-
-    const orderRetained = ()=>{
-        dispatch(emptyEntireCart())
-        setTimeout(()=>{
-            navigate('/home')
-        },4000)
-        dispatch(resetState())
-    }
-
-    
-    
     const [cartProductState,setCartProductState] = useState([])
 
     const formik = useFormik({
@@ -83,20 +63,16 @@ const Checkout = () => {
 
     useEffect(()=>{
         let items = []
-                for (let index = 0; index < cartState.length; index++) {
-                    items.push({
-                        product:cartState[index]?.productId?._id,
-                        quantity:cartState[index]?.orderedQuantity,
-                        color:cartState[index]?.color?._id,
-                        price:cartState[index]?.productId?.price
-                    })
-                }
-                setCartProductState(items)
+        for (let index = 0; index < cartState.length; index++) {
+            items.push({
+                product:cartState[index]?.productId?._id,
+                quantity:cartState[index]?.orderedQuantity,
+                color:cartState[index]?.color?._id,
+                price:cartState[index]?.productId?.price
+            })
+        }
+        setCartProductState(items)
     },[cartState])
-
-
-
-
 
     const loadScript = (src)=>{
         return new Promise((resolve,reject)=>{
@@ -143,23 +119,35 @@ const Checkout = () => {
 
                 const result = await axios.post(`${base_url}user/order/paymentverification`, data,config);
 
-
                 if (response && response.razorpay_payment_id && response.razorpay_order_id) {
-                        dispatch(createAnOrder({
-                            totalPrice:TotalCost,
-                            totalPriceAfterDiscount:TotalCost,
-                            orderItems:getLocation !== undefined ? {
-                                product:singleProduct?._id,
-                                quantity:1,
-                                color:singleProduct?.color[0]?._id,
-                                price:singleProduct?.price
-                            }:cartProductState,
-                            paymentInfo:{
-                                razorpayPaymentId: response.razorpay_payment_id,
-                            razorpayOrderId: response.razorpay_order_id,
-                            },
-                            shippingInfo:values
-                        }))
+                    const orderData = {
+                        totalPrice:TotalCost,
+                        totalPriceAfterDiscount:TotalCost,
+                        orderItems:getLocation !== undefined ? {
+                            product:singleProduct?._id,
+                            quantity:1,
+                            color:singleProduct?.color[0]?._id,
+                            price:singleProduct?.price
+                        }:cartProductState,
+                        paymentInfo:{
+                            razorpayPaymentId: response.razorpay_payment_id,
+                        razorpayOrderId: response.razorpay_order_id,
+                        },
+                        shippingInfo:values
+                    }
+                        dispatch(createAnOrder(orderData))
+                        .then((response)=>{
+                            if(response?.payload?.success)
+                            {
+                                toast.success("Ordered Placed Navigating To Orders")
+                                dispatch(emptyEntireCart())
+                                .then(()=>{
+                                    dispatch(resetState())
+                                })
+                                navigate('/orders')
+                            }
+                            else toast.error("Something Went Wrong")
+                        })
                 } else {
                     console.error("Invalid response from Razorpay:", response);
                 }

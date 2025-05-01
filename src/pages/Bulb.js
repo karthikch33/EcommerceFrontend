@@ -23,7 +23,7 @@ const Bulb = () => {
     <div className="container-xxl text-center">
         <div className="row">
             <div className="col-12 d-flex justify-content-end ">
-                {serverCondition?.status === 201?<label htmlFor="" className='server-white'>Server Is On</label>:<label htmlFor="" className='server-white'>Waiting For Server Connection
+                {serverCondition?.status === 201?<label htmlFor="" className='server-white'>Connected</label>:<label htmlFor="" className='server-white'>Reconnecting
                 <LoadingDots/>
                 </label>}
                 {serverCondition?.status === 201?<div className='mt-2'>

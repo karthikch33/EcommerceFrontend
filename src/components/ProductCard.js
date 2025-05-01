@@ -28,13 +28,25 @@ const ProductCard = React.memo((props) => {
   }, []);
 
   const handleWishlist = (productId) => {
+    messageApi?.open({
+      key : 'updatable',
+      type : 'loading',
+      content: 'Loading...'
+    })
     dispatch(addToWishlist(productId))
-    .then(()=>{
-      dispatch(getWishlist(user))
+    .then((response)=>{
+      const status = response?.payload?.status
+      dispatch(getWishlist(user)) // no need of two api's here check after
       .then((response)=>{
         setWish(response?.payload);
+        messageApi?.open({
+          key : 'updatable',
+          type : 'success',
+          content: status
+        })
       })
     })
+
   };
 
   const handleCompare = (productId) => {
@@ -93,11 +105,11 @@ const ProductCard = React.memo((props) => {
                 onClick={
                   location.pathname.startsWith("/product") ? smoothScroll : null
                 }
-                style={{ minHeight: "400px", maxHeight: "400px" }}
+                style={{ minHeight: "350px", maxHeight: "350px",width:'289px' }}
               >
                 <div className="wishlist-icon position-absolute">
                   {Array.isArray(wish) &&
-                  wish?.some((item) => item?._id?.includes(element?._id)) ? (
+                  wish?.some((item) => item?._id?.includes(element?._id)) ? (  // worst case of doing like this
                     <button
                       className="border-0 bg-transparent"
                       onClick={() => handleWishlist(element?._id)}
@@ -143,13 +155,13 @@ const ProductCard = React.memo((props) => {
                       alt=""
                     />
                   </div>
-                  <div className="product-details">
+                  <div className={`product-details`}>
                     <h6 className="brand">{element?.brand}</h6>
                     <h5 className="product-title">
                       <p className="fs-6">
                         {grid === 12
                           ? element?.title
-                          : element?.title.substr(0, 65) + "....."}
+                          : element?.title.substr(0, 35) + "....."}
                       </p>
                     </h5>
                     <ReactStars
@@ -157,15 +169,15 @@ const ProductCard = React.memo((props) => {
                       size={20}
                       value={parseInt(element?.totalrating)}
                       edit={false}
-                    />
-
+                    /> 
+                    {/* when  */}
+                    <p className="price">&#8377;{element?.price}</p>
                     <p
                       className={`description ${
                         grid === 12 ? "d-block" : "d-none"
                       }`}
                       dangerouslySetInnerHTML={{ __html: element?.description }}
                     ></p>
-                    <p className="price">&#8377;{element?.price}</p>
                   </div>
                 </Link>
                 <div className="action-bar position-absolute">

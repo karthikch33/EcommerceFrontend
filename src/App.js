@@ -26,6 +26,7 @@ import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import Demo from './pages/Demo';
 import Orders from './pages/Orders';
+import MyOrders from './pages/Demo';
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Layout/>}>
-          <Route path='/home' element={<Demo/>}></Route>
+          <Route path='/orders' element={<MyOrders/>}></Route>
           <Route index element={<Home/>}/>
           <Route path='about' element={<About/>}/>
           <Route path='contact' element={<PrivateRoutes><Contact/></PrivateRoutes>}/>

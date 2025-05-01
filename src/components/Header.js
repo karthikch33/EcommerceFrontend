@@ -124,7 +124,8 @@ const Header = () => {
                     <p className='text-white mb-0'>Save Upto 40% On Each Item On Sale</p>
                 </div>
                 <div className="col-6">
-                    <p className='text-end text-white mb-0'>Customer Support: <a className='text-white' href="(+91-08644-9839022)">(+91-08644-9839022)</a> </p>
+                    {/* <p className='text-end text-white mb-0'>Customer Support: <a className='text-white' href="(+91-08644-9839022)">(+91-08644-9839022)</a> </p> */}
+                <Bulb className='order-11'/>
                 </div>
             </div>
         </div>
@@ -211,15 +212,13 @@ const Header = () => {
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Laptops')}>Laptops</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Washing Machines')}>Machines</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/store" onClick={()=>getAllProducts('Cameras')}>Electronics</NavLink>
+                            <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/orders">MyOrders</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/blogs">Blogs</NavLink>
                             <NavLink className="text-white fs-6 mb-2 mb-md-0" to="/contact">Contact</NavLink>
                             <NavLink>   
                             {
                                 localStorage.getItem('user') && <button className="bg-transparent border-0 text-white fs-5" onClick={handleLogOut}>Logout</button>
                             }
-                            </NavLink>
-                            <NavLink>
-                            <Bulb className='order-11'/>
                             </NavLink>
                         </div>
                     </div>

@@ -3,9 +3,9 @@ import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import ReactStars from 'react-rating-stars-component';
 import ProductCard from '../components/ProductCard';
-import ReactImageZoom from 'react-image-zoom';
+// import ReactImageZoom from 'react-image-zoom';
 import {useFormik} from 'formik'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Space } from 'antd';
 import Color from '../components/Color';
 import { BiGitCompare } from 'react-icons/bi';
@@ -15,82 +15,134 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, getProducts, getSingleProduct } from '../features/products/productSlice';
 import { addCompareItem, addToCart, getCart, getCompareItems, getWishlist } from '../features/user/userSlice';
 import { toast } from 'react-toastify';
-import LoadingPage from '../components/Loading';
+import { message } from 'antd';
+// import LoadingPage from '../components/Loading';
 
 const SingleProduct = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const getProductId = location.pathname.split('/')[2];
 
-  const { singleProduct,productList } = useSelector((state) => state.product);
-  const { wishlist, compareItemsList, userCart } = useSelector((state) => state.user);
+  // const { productList } = useSelector((state) => state.product);
+  const { userCart } = useSelector(state=>state.user)
 
   const navigate = useNavigate()
 
   const [currentProduct, setCurrentProduct] = useState(null);
-  const [wish, setWish] = useState(wishlist);
+  const [wish, setWish] = useState(null);
   const [compareItems, setCompareItems] = useState(null);
+  const [messageApi,contextHolder] = message.useMessage();
 
   const [copied, setCopied] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(null);
+  const [addedStatus,setAddedStatus] = useState(false);
+  const [productList,setProductList] = useState([]);
 
   const handleWishlist = (getProductId) => {
-    dispatch(addToWishlist(getProductId));
-    setTimeout(() => {
-      dispatch(getWishlist(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id : ''));
-    }, [300]);
+    messageApi.open({
+      key:'wishlist',
+      type:'loading',
+      content:"Loading..."
+    })
+    dispatch(addToWishlist(getProductId))
+    .then((response)=>{
+      const status = response?.payload['status']
+      dispatch(getWishlist(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id : ''))
+      .then((response)=>{
+        setWish(response?.payload)
+        messageApi?.open({
+          key:'wishlist',
+          type:'success',
+          content:status
+        })
+      })
+    })
   };
 
-  
-
   const handleCompareList = (getProductId) => {
-    dispatch(addCompareItem(getProductId));
-    setTimeout(() => {
-      dispatch(getCompareItems(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id : ''));
-    }, [300]);
+    messageApi?.open({
+      key : 'updatable',
+      content:'Loading...',
+      type:'loading'
+    })
+    dispatch(addCompareItem(getProductId))
+    .then((response)=>{
+      const status = response?.payload['status'];
+      if(status === 200){
+        dispatch(getCompareItems(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id : ''))
+        .then((response)=>{
+          setCompareItems(response?.payload?.compareItems);
+          messageApi?.open({
+            key : 'updatable',
+            content:'Added To Compare List',
+            type:'success'
+          })
+        })
+      }
+    })
   };
 
   const addProductToCart = (productId) => {
-    dispatch(
-      addToCart({
-        productId: productId,
-        color: color,
-        orderedQuantity: quantity,
-      })
-    );
-    setTimeout(() => {
+    const cartData = {
+      productId: productId,
+      color: color,
+      orderedQuantity: quantity,
+    }
+    messageApi?.open({
+      key : 'updatable',
+      type:'loading',
+      content:'Loading...'
+    })
+    dispatch(addToCart(cartData))
+    .then((response)=>{
+      const message = response?.payload?.message
       dispatch(getCart(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))?._id : ''));
-    }, 500);
+      if(message.toString() === "Product Incremented to cart successfully"){
+        setAddedStatus(true);
+        messageApi?.open({
+          key : 'updatable',
+          type:'success',
+          content:'Product Incremented to cart successfully'
+        })
+      }
+      else if(message.toString() === "Product added to cart successfully")
+      {
+        setAddedStatus(true);
+        messageApi?.open({
+          key : 'updatable',
+          type:'success',
+          content:'Product added to cart successfully'
+        }) 
+      }
+    })
   };
 
-  const [tag,setTag] = useState(null)
+  // const [tag,setTag] = useState(null)
   const [category,setCategory] = useState(null)
-  // const {productList} = useSelector(state=>state?.product)
 
 const getAllProducts = ()=>{
     dispatch(getProducts({category}))
+    .then((response)=>{
+      const categoryList = response?.payload;
+      const filteredCategoryList = categoryList?.filter(item => item?._id !== getProductId)
+      setProductList(filteredCategoryList);
+    })
 }
 
   useEffect(() => {
-    setWish(wishlist);
-    setCompareItems(compareItemsList);
-  }, [wishlist, compareItemsList]);
-
-  useEffect(() => {
-    if (getProductId !== undefined) {
-      dispatch(getSingleProduct(getProductId));
+    if (getProductId !== undefined && userCart) {
+      dispatch(getSingleProduct(getProductId))
+      .then((response)=>{
+        setCurrentProduct(response?.payload);
+        setCategory(response?.payload?.category)
+        const alreadyAdded = userCart?.some(item => item?.productId?._id === getProductId?.toString())
+        if(alreadyAdded) setAddedStatus(true);
+        // setTag(response?.payload?.tag) 
+      })
     }
-  }, [getProductId]);
-
-  
-
-  useEffect(() => {
-    setCurrentProduct(singleProduct);
-    setCategory(singleProduct?.category)
-    setTag(singleProduct?.tag)
-  }, [singleProduct]);
+  }, [getProductId,userCart]);
 
   useEffect(()=>{
     getAllProducts()
@@ -120,6 +172,7 @@ const getAllProducts = ()=>{
 
    const [currentImage,setCurrentImage] = useState(0)
    const [rating1, setRating1] = useState(0);
+
    const handleRatingChange1 = (newRating) => {
     setRating1(newRating);
     };
@@ -139,9 +192,10 @@ const getAllProducts = ()=>{
 
   return (
     <>
+    {contextHolder}
       <Meta title={'Product Name'} />
       <BreadCrumb title="Product Name" />
-      <Container class1="main-product-wrapper py-5 home-wrapper">
+      <Container class1="main-product-wrapper home-wrapper">
         <div className="row">
           <div className="col-md-6 mb-4 order-md-1 order-2 d-none d-md-flex flex-column">
             <div className="main-product-image">
@@ -162,11 +216,12 @@ const getAllProducts = ()=>{
             </div>
             <div className="other-product-images d-flex flex-wrap gap-3 justify-content-center align-items-center">
               {currentProduct?.images &&
-                currentProduct?.images.map((image, index) => (
-                  <div key={index} >
+                currentProduct?.images.map((image, index) => {
+                  if(index < 4){
+                  return <div key={index} >
                     <img src={image.url} className="img-fluid" onClick={()=>setCurrentImage(index)} style={{ objectFit: 'contain' }} alt="" />
                   </div>
-                ))}
+}})}
             </div>
           </div>
           <div className="col-md-6 order-md-2 order-1">
@@ -251,7 +306,7 @@ const getAllProducts = ()=>{
                   </div>
                   <div className="d-flex flex-wrap gap-2 mt-3">
                     <button className="btn button" onClick={() => addProductToCart(currentProduct?._id)}>
-                      Add To Cart
+                     {addedStatus ? "Click To Inc" :  "Add To Cart"}
                     </button>
                     <button className="button" onClick={()=>buyNowThisItem(currentProduct?._id)}>Buy Now</button>
                   </div>

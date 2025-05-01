@@ -5,33 +5,48 @@ import Meta from '../components/Meta'
 import {getWishlist} from '../features/user/userSlice'
 import Container from '../components/Container'
 import { Link } from 'react-router-dom'
+import { message } from 'antd'
 import { addToWishlist } from '../features/products/productSlice'
 
 const Wishlist = () => {
 
     const dispatch = useDispatch()
-
-    const {wishlist} = useSelector(state=>state.user)
+    const [wish,setWishlist] = useState();
+    const [messageApi,contextHolder] = message?.useMessage();
 
     const handleRemover = (prodId)=>{
+        messageApi?.open({
+            key : 'updatable',
+            content:'Loading...',
+            type : 'loading'
+        })
         dispatch(addToWishlist(prodId))
-        setTimeout(()=>{
+        .then((response)=>{
             dispatch(getWishlist(localStorage.getItem('user')? JSON.parse(localStorage.getItem('user'))._id:""))
-        },200)
+            .then((response)=>{
+                const wishlist = response?.payload;
+                setWishlist(wishlist);
+                messageApi?.open({
+                    key : 'updatable',
+                    type:'success',
+                    content:'Removed From Wishlist',
+                })
+            })
+        })
     }
 
-    const [wish,setWishlist] = useState(wishlist)
 
     useEffect(()=>{
         dispatch(getWishlist(localStorage.getItem('user')? JSON.parse(localStorage.getItem('user'))._id:""))
+        .then((response)=>{
+            const wishlist = response?.payload;
+            setWishlist(wishlist);
+        })
     },[])
-    
-    useEffect(()=>{
-        setWishlist(wishlist)
-    },[wishlist])
 
   return (
     <>
+    {contextHolder}
          <Meta title={"WishList"}/>  
         <BreadCrumb title="Wishlist"/>
         <Container fluid className="wishlist-wrapper home-wrapper-2 py-5">

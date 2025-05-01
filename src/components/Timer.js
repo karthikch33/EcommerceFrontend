@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 const Timer = () => {
-  const endDate = new Date('2025-02-31T23:59:59'); // Replace with your fixed end date
+  // const now = new Date();
+  // const endDate = new Date(now.getTime() + 72 * 60 * 60 * 1000); // Set the end date to 72 hours from now
+  const endDate = new Date('2025-08-31T23:59:59'); // Replace with your fixed end date
 
   const [timer, setTimer] = useState(calculateTimeRemaining());
 

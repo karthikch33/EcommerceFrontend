@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import BreadCrumb from '../components/BreadCrumb'
-import ReactStar from 'react-rating-stars-component'
+// import ReactStar from 'react-rating-stars-component'
 import Meta from '../components/Meta'
 import {useDispatch, useSelector} from 'react-redux'
 import ProductCard from '../components/ProductCard'
-import Color from '../components/Color'
+// import Color from '../components/Color'
+import { FaFilterCircleXmark } from "react-icons/fa6";
+import { FaFilter } from "react-icons/fa6";
 import Container from '../components/Container'
 import { getProducts } from '../features/products/productSlice'
-import { Col } from 'antd'
 const OurStore = () => {
-    const [grid,setGrid] = useState(6);
+    const [grid,setGrid] = useState(4);
     const {productList} = useSelector(state=>state?.product)
     const [brands,setBrands] = useState([])
     const [categories,setCategories] = useState([])
@@ -18,11 +19,11 @@ const OurStore = () => {
 
     // Filter States
     const [tag,setTag] = useState(null)
-    const [tag2,setTag2] = useState(null)
+    // const [tag2,setTag2] = useState(null)
     const [category,setCategory] = useState(null)
-    const [category2,setCategory2] = useState(null)
+    // const [category2,setCategory2] = useState(null)
     const [brand,setBrand] = useState(null)
-    const [brand2,setBrand2] = useState(null)
+    // const [brand2,setBrand2] = useState(null)
     const [minPrice,setMinPrice] = useState(null)
     const [maxPrice,setMaxPrice] = useState(null)
     const [sort,setSort] = useState(null)
@@ -70,7 +71,7 @@ const OurStore = () => {
         if (window.matchMedia('(max-width: 767.98px)').matches) {
           setGrid('12'); // Set grid class to gr-12 for small screens
         } else {
-          setGrid('6'); // Set grid class to gr-4 for other screen sizes
+          setGrid('4'); // Set grid class to gr-4 for other screen sizes
         }
       };
   
@@ -90,6 +91,10 @@ const OurStore = () => {
     const [filterVisible, setFilterVisible] = useState(true);
 
   const toggleFilterVisibility = () => {
+    if(filterVisible)
+      setGrid(3)
+    else
+      setGrid(4)
     setFilterVisible(!filterVisible)
   };
     
@@ -98,22 +103,20 @@ const OurStore = () => {
         <Meta title={"OurStore"}/>  
         <BreadCrumb title="OurStore"/>
         
-        <Container className="store-wrapper home-wrapper-2 py-5" >
-          <div className="row">
-            <div className="col-12">
-        <div className='d-flex justify-content-center align-items-center'>
-      <button onClick={toggleFilterVisibility} className="btn btn-warning mt-3" style={{outline:"none",border:"none"}} >
-            {filterVisible ? 'Hide Filters' : 'Show Filters'}
+        <Container className="store-wrapper home-wrapper-2" >
+    <div className="row">
+    <div className="row">
+    <div className={`col-lg-3 col-md-4`}>
+        <div className='d-flex'>
+          <h3 className='filter-title fs-3 my-3'>Filters</h3>
+          <button onClick={toggleFilterVisibility} className="btn mt-2 mb-2 ms-1" style={{outline:"none",border:"none"}} >
+            {!filterVisible ? <FaFilter/> : <FaFilterCircleXmark/>}
           </button>
           </div>
-            </div>
           </div>
-    <div className="row">
+          </div>
       <div className={`col-lg-3 col-md-4 ${filterVisible ? 'd-block' : 'd-none'}`}>
         <div className='filter-card'>
-          <h3 className='filter-title fs-3 my-3'>
-            Filter By 
-          </h3>
           <h4>Product Categories</h4>
           <div className='product-tags d-flex flex-wrap align-items-center gap-10'>
             {categories && [...new Set(categories)].map((element, i) => (
@@ -165,13 +168,13 @@ const OurStore = () => {
                 <option value="-created"> Date, High to Low</option>
               </select>
             </div>
-            <div className='d-flex align-items-center gap-10 justify-content-center'>
+            {/* <div className='d-flex align-items-center gap-10 justify-content-center'>
               <p className="totalproducts mb-0">{productList?.length} Products</p>
               <div className="d-flex gap-10 align-items-center grid">
                 <img onClick={() => setGrid(12)} src="images/gr.svg" className='d-block img-fluid' alt="" />
-                <img onClick={() => setGrid(6)} src="images/gr2.svg" className='d-block img-fluid' alt="" />
+                <img onClick={() => setGrid(4)} src="images/gr2.svg" className='d-block img-fluid' alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="products-list pb-5">

@@ -433,9 +433,9 @@ footer .input-group span{
   background-color: white;
   box-shadow: 0 0 4px rgba(0,0,0,0.1);
   border-radius: 10px;
-  margin:20px 0;
+  margin: 10px 0;
   overflow: hidden;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .product-card .product-details h6{
@@ -449,7 +449,7 @@ footer .input-group span{
 }
 
 .product-card .product-image img{
-  width: 280px;
+  width: 250px;
   height: 200px;
 }
 
@@ -460,14 +460,11 @@ footer .input-group span{
 
 .product-card .product-image>img:last-child{
   display: none;
-  transition: .3s;
 }
 .product-card:hover .product-image>img:nth-child(1){
   display: none;
-  transition: .3s;
 }
 .product-card:hover .product-image>img:last-child{
-  transition: .3s;
   display: block;
 }
 
@@ -691,7 +688,8 @@ ion-icon{
 }
 
 .product-card p.description{
-  font-size: 13px;
+  font-size: 5px;
+  margin-top: -15px;
   color: var(--color-3b4149);
 }
 
@@ -755,7 +753,6 @@ ion-icon{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0px;
 }
 
 .compare-product-details h5.title{

@@ -1,12 +1,4 @@
-const swiperSlide = [{
-    img:"https://m.media-amazon.com/images/I/717RUPA1bDL._SX3000_.jpg"
-},
-{
-    img:"https://m.media-amazon.com/images/I/71j8damPo5L._SX3000_.jpg"
-},
-{
-    img:'https://m.media-amazon.com/images/I/61CiqVTRBEL._SX3000_.jpg'
-},
+const swiperSlide = [
 {
     img:'https://images-eu.ssl-images-amazon.com/images/G/31/imgg/hero/1499/30th/nov/hero1300x1200._CB572143637_.jpg'
 },
@@ -15,9 +7,7 @@ const swiperSlide = [{
 },
 {
     img:'https://images-eu.ssl-images-amazon.com/images/G/31/img22/WLA/2023/Unrec/R3/D91435399_WLA-BAU-Unrec-Hero_DesktopTallHero_3000x1200._CB577798844_.jpg'
-},
-
-
+}
 ]
 
 export default swiperSlide

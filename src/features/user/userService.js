@@ -74,6 +74,12 @@ const createOrder = async(orderData)=>{
     return response.data
 }
 
+const getOrders = async(orderData)=>{
+    console.log(config);
+    const response = await axios.get(`${base_url}user/getorders`,config);
+    return response.data;
+}
+
 const updateUserService = async(updatedData)=>{
     const response = await axios.put(`${base_url}user/updateuser`,updatedData,config)
     return response.data
@@ -106,6 +112,7 @@ const userServices= {
     getCartService,
     emptyCartService,
     createOrder,
+    getOrders,
     getUserService,
     emptyEntireCartService,
     updateUserService,

@@ -3,6 +3,7 @@ import BreadCrumb from '../components/BreadCrumb'
 import Meta from '../components/Meta'
 import Color from '../components/Color'
 import Container from '../components/Container'
+import { message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCompareItem, getCompareItems } from '../features/user/userSlice'
 import { Link } from 'react-router-dom'
@@ -10,26 +11,49 @@ const CompareProduct = () => {
     const dispatch = useDispatch()
 
     const {compareItemsList} = useSelector(state=>state.user)
+    const [messageApi,contextHolder] = message.useMessage()
 
     const [itemslist,setItemsList] = useState(compareItemsList)
     useEffect(()=>{
         dispatch(getCompareItems(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id:""))
+        .then((response)=>{
+            setItemsList(response?.payload?.compareItems)
+        })
     },[])
 
-
     const handleRemover = (productId)=>{
-        dispatch(addCompareItem(`${productId} remover`))
-        setTimeout(()=>{
+        messageApi.open({
+            key:'updatable',
+            type:'loading',
+            content:'Loading...'
+        })
+        dispatch(addCompareItem(`${productId}`))
+        .then((response)=>{
+            const status = response?.payload['status']
             dispatch(getCompareItems(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))._id:""))
-        },400)
+            .then((response)=>{
+                if(status === 403){
+                    messageApi?.open({
+                        key :'updatable',
+                        type:'success',
+                        content:'Removed From Compare List',
+                    })
+                }
+                else{
+                    messageApi?.open({
+                        key : 'updatable',
+                        type:'error',
+                        content:'Error Occured'
+                    })
+                }
+                setItemsList(response?.payload?.compareItems)
+            })
+        })
     }
-
-    useEffect(()=>{
-        setItemsList(compareItemsList)
-    },[compareItemsList])
 
   return (
     <>
+    {contextHolder}
         <Meta title={"Compare Product"}/>  
         <BreadCrumb title="Compare Products"/>
         <Container fluid className="home-wrapper-2" >
@@ -45,7 +69,7 @@ const CompareProduct = () => {
                             onClick={() => handleRemover(element?._id)}
                         />
                     <Link to={`/product/${element?._id}`}>
-                        <div style={{ width: "100%", height: "270px"}} className=" ">
+                        <div style={{ width: "100%", height: "200px"}} className=" ">
                             <img
                                 src={element?.images[0]?.url}
                                 className="img-fluid"
@@ -54,8 +78,11 @@ const CompareProduct = () => {
                             />
                         </div>
                         <div className="compare-product-details">
-                            <h5 className="title text-center my-3">{element?.title.substring(0,30)+"......."}</h5>
-                            <h6 className="price text-end">&#8377; {element?.price}</h6>
+                            <h5 className="title text-center ">{element?.title.substring(0,30)+"......."}</h5>
+                            <div className="product-detail">
+                                <h5>Price</h5>
+                                <p style={{color:'red'}}>&#8377;{element?.price}</p>
+                            </div>
                             <div className="product-detail">
                                 <h5>Brand</h5>
                                 <p>{element?.brand}</p>

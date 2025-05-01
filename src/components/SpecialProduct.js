@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
 import ReactStars from "react-rating-stars-component";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,13 @@ import { message } from "antd";
   const SpecialProduct = (props) => {
   const dispatch = useDispatch()
   const [color, setColor] = useState(null);
+  const [status ,setStatus] = useState(false);
+  const { title, price, brand, image, rating, quantity, sold , id, alreadyAdded} = props;
+
+  useEffect(()=>{
+    // alert(alreadyAdded)
+    setStatus(alreadyAdded)
+  },[alreadyAdded])
 
   const addProductToCart = (productId) => {
     const cartData = {
@@ -20,18 +27,25 @@ import { message } from "antd";
     .then((response)=>{
       const Cart_message = response?.payload?.message;
       message.success(Cart_message)
-      dispatch(getCart(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))?._id : ''));
+      dispatch(getCart(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))?._id : ''))
+      setStatus(true);
     })
   };
   
-  const { title, price, brand, image, rating, quantity, sold , id} = props;
   return (
     <Col xs={12} sm={6} md={6} lg={4}>
-    <div className="special-product-card p-4" >
+    <div className="special-product-card p-4" > {alreadyAdded}
       <div className="d-flex flex-column flex-md-row justify-content-around">
         <Link to={`/product/${id}`}>
-        <div className="mb-3 mb-md-0 d-flex justify-content-center">
-          <img src={image} className="img-fluid" alt={title} />
+        <div className="mb-3 mb-md-0">
+          <img src={image} className="img-fluid" alt={title} style={{marginTop:"-10px"}}/>
+          <Link
+            className="mt-3"
+            style={{ backgroundColor : "#232f3e",padding : "2px", transformStyle: "1",color:"white",borderRadius:"5px" }}
+            onClick={() => addProductToCart(id)}
+          >
+            {!status ? 'Add To Cart' : 'Add To Inc'}
+          </Link>
         </div>
         </Link>
         <div className="special-product-content ml-md-4 ms-5">
@@ -56,13 +70,6 @@ import { message } from "antd";
               ></div>
             </div>
           </div>
-          <Link
-            className="button mt-3"
-            style={{ height: "50px", padding: "10px", transformStyle: "1" }}
-            onClick={() => addProductToCart(id)}
-          >
-            Add To Cart
-          </Link>
         </div>
       </div>
     </div>
